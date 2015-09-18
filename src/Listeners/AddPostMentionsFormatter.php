@@ -12,7 +12,7 @@ namespace Flarum\Mentions\Listeners;
 
 use Flarum\Events\FormatterConfigurator;
 use Flarum\Core\Posts\CommentPost;
-use Flarum\Http\UrlGeneratorInterface;
+use Flarum\Forum\Http\UrlGeneratorInterface;
 
 class AddPostMentionsFormatter
 {
