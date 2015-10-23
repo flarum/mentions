@@ -21,6 +21,9 @@ export default class PostMentionedNotification extends Notification {
     const auc = notification.additionalUnreadCount();
     const user = notification.sender();
 
+    // NEEDS TO BE FIXED:
+    // This string needs to be pluralized based on a {count} including "username" plus "others".
+    // Singular if there are no "others". Plural if there are.
     return app.translator.trans('flarum-mentions.forum.notifications.post_mentioned_text', {
       user,
       username: auc ? punctuateSeries([
