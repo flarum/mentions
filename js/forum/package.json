@@ -1,8 +1,11 @@
 {
-  "private": true,
+  "name": "@flarum/flarum-ext-lock-forum",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "flarum-gulp": "^0.2.0",
-    "textarea-caret": "~3.0.0"
+    "flarum-webpack-config": "^0.1.0-beta.6",
+    "textarea-caret": "^3.1.0"
+  },
+  "scripts": {
+    "watch": "node_modules/webpack/bin/webpack.js --mode development --watch",
+    "build": "node_modules/webpack/bin/webpack.js --mode production"
   }
 }
