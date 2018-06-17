@@ -16,8 +16,8 @@ use Illuminate\Contracts\View\Factory;
 
 return [
     (new Extend\Assets('forum'))
-        ->js(__DIR__.'/js/forum/dist/main.js')
-        ->asset(__DIR__.'/less/forum/extension.less'),
+        ->js(__DIR__.'/js/dist/forum.js')
+        ->asset(__DIR__.'/less/forum.less'),
 
     function (Dispatcher $events, Factory $views) {
         $events->subscribe(Listener\AddPostMentionedByRelationship::class);
