@@ -11,4 +11,4 @@
 
 use Flarum\Database\Migration;
 
-return Migration::renameTable('mentions_posts', 'posts_mentioned_posts');
+return Migration::renameColumn('post_mentions_post', 'mentions_id', 'mentions_post_id');

@@ -14,27 +14,27 @@ use Illuminate\Database\Schema\Builder;
 
 return [
     'up' => function (Builder $schema) {
-        // Make sure the entities exist so that we will be able to create
+        // Delete rows with non-existent entities so that we will be able to create
         // foreign keys without any issues.
-        $connection = $schema->getConnection();
-        $prefix = $connection->getTablePrefix();
-        $connection->statement("delete from {$prefix}posts_mentioned_users
-            where not exists (select 1 from {$prefix}posts where id = post_id)
-            or not exists (select 1 from {$prefix}users where id = mentions_id)");
+        $schema->getConnection()
+            ->table('post_mentions_user')
+            ->whereNotExists(function ($query) {
+                $query->selectRaw(1)->from('posts')->whereRaw('id = post_id');
+            })
+            ->orWhereNotExists(function ($query) {
+                $query->selectRaw(1)->from('users')->whereRaw('id = mentions_user_id');
+            })
+            ->delete();
 
-        $schema->table('posts_mentioned_users', function (Blueprint $table) {
-            $table->renameColumn('mentions_id', 'mentions_user_id');
-
+        $schema->table('post_mentions_user', function (Blueprint $table) {
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->foreign('mentions_user_id')->references('id')->on('users')->onDelete('cascade');
         });
     },
 
     'down' => function (Builder $schema) {
-        $schema->table('posts_mentioned_users', function (Blueprint $table) {
+        $schema->table('post_mentions_user', function (Blueprint $table) {
             $table->dropForeign(['post_id', 'mentions_user_id']);
-
-            $table->renameColumn('mentions_user_id', 'mentions_id');
         });
     }
 ];

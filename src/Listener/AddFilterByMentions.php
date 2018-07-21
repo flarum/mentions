@@ -30,8 +30,8 @@ class AddFilterByMentions
     public function addFilter(ConfigurePostsQuery $event)
     {
         if ($mentionedId = array_get($event->filter, 'mentioned')) {
-            $event->query->join('posts_mentioned_users', 'posts.id', '=', 'posts_mentioned_users.post_id')
-                ->where('posts_mentioned_users.mentions_user_id', '=', $mentionedId);
+            $event->query->join('post_mentions_user', 'posts.id', '=', 'post_mentions_user.post_id')
+                ->where('post_mentions_user.mentions_user_id', '=', $mentionedId);
         }
     }
 }
