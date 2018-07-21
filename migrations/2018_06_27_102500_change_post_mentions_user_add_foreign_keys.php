@@ -19,10 +19,10 @@ return [
         $schema->getConnection()
             ->table('post_mentions_user')
             ->whereNotExists(function ($query) {
-                $query->selectRaw(1)->from('posts')->whereRaw('id = post_id');
+                $query->selectRaw(1)->from('posts')->whereColumn('id', 'post_id');
             })
             ->orWhereNotExists(function ($query) {
-                $query->selectRaw(1)->from('users')->whereRaw('id = mentions_user_id');
+                $query->selectRaw(1)->from('users')->whereColumn('id', 'mentions_user_id');
             })
             ->delete();
 
