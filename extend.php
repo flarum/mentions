@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Flarum\Api\Event\Serializing;
 use Flarum\Api\Event\WillSerializeData;
 use Flarum\Api\Serializer\PostSerializer;
 use Flarum\Event\ConfigureNotificationTypes;
