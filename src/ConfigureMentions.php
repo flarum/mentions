@@ -62,7 +62,8 @@ class ConfigureMentions
      */
     public static function addUserId($tag)
     {
-        if ($user = User::where('username', 'like', $tag->getAttribute('username'))->first()) {
+        $userName = str_replace('_', '\_', $tag->getAttribute('username'));
+        if ($user = User::where('username', 'like', $userName)->first()) {
             $tag->setAttribute('id', $user->id);
             $tag->setAttribute('displayname', $user->display_name);
 
