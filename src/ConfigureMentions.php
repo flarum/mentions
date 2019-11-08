@@ -84,7 +84,7 @@ class ConfigureMentions
         $tag->attributes->add('discussionid')->filterChain->append('#uint');
         $tag->attributes->add('id')->filterChain->append('#uint');
 
-        $tag->template = '<a href="{$DISCUSSION_URL}{@discussionid}/{@number}" rel="nofollow" class="PostMention" data-id="{@id}"><xsl:value-of select="@displayname"/></a>';
+        $tag->template = '<a href="{$DISCUSSION_URL}{@discussionid}/{@number}" rel="noindex" class="PostMention" data-id="{@id}"><xsl:value-of select="@displayname"/></a>';
 
         $tag->filterChain
             ->prepend([static::class, 'addPostId'])
