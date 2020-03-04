@@ -36,9 +36,9 @@ return [
         ->configure(ConfigureMentions::class),
 
     (new Extend\Model(Post::class))
-        ->belongsToMany('mentionedBy', Post::class, 'post_mentions_post', 'mentions_post_id', 'post_id')
-        ->belongsToMany('mentionsPosts', Post::class, 'post_mentions_post', 'post_id', 'mentions_post_id')
-        ->belongsToMany('mentionsUsers', User::class, 'post_mentions_user', 'post_id', 'mentions_user_id'),
+        ->belongsToMany('mentionedBy', Post::class, 'post_mentions', 'mentions_post_id', 'post_id')
+        ->belongsToMany('mentionsPosts', Post::class, 'post_mentions', 'post_id', 'mentions_post_id')
+        ->belongsToMany('mentionsUsers', User::class, 'post_mentions', 'post_id', 'mentions_user_id'),
 
     new Extend\Locales(__DIR__.'/locale'),
 
