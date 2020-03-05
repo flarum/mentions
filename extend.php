@@ -11,6 +11,7 @@
 
 use Flarum\Api\Event\WillSerializeData;
 use Flarum\Api\Serializer\PostSerializer;
+use Flarum\Approval\Event\PostWasApproved;
 use Flarum\Event\ConfigureNotificationTypes;
 use Flarum\Event\ConfigurePostsQuery;
 use Flarum\Extend;
@@ -44,7 +45,7 @@ return [
             $event->add(UserMentionedBlueprint::class, PostSerializer::class, ['alert']);
         });
         $events->listen(
-            [Posted::class, Restored::class, Revised::class],
+            [Posted::class, Restored::class, Revised::class, PostWasApproved::class],
             Listener\UpdateMentionsMetadataWhenVisible::class
         );
         $events->listen(
