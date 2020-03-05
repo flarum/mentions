@@ -76,7 +76,7 @@ class UpdateMentionsMetadataWhenVisible
             ->whereIn('id', $mentioned)
             ->get()
             ->filter(function ($post) use ($reply) {
-                return $post->user && $post->user->id !== $reply->user_id;
+                return $post->user && $reply->isVisibleTo($post->user) && $post->user->id !== $reply->user_id;
             })
             ->all();
 
