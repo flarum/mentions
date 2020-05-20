@@ -90,6 +90,8 @@
   position: absolute;
   .Button--color(@tooltip-color, @tooltip-bg);
 }
-.Post-footer .item-replies {
-  position: relative;
+@media screen and (max-width: @screen-phone-max) {
+  .MentionsDropdown {
+    max-width: 100%;
+  }
 }
