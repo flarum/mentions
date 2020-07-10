@@ -41,7 +41,7 @@ return [
     'down' => function (Builder $schema) {
         // Recreate old tables
         $schema->create(
-            'post_mentions_user',
+            'post_mentions_post',
             function (Blueprint $table) {
                 $table->integer('post_id')->unsigned();
                 $table->integer('mentions_post_id')->unsigned();
@@ -50,11 +50,11 @@ return [
         );
 
         $schema->create(
-            'post_mentions_post',
+            'post_mentions_user',
             function (Blueprint $table) {
                 $table->integer('post_id')->unsigned();
-                $table->integer('mentions_post_id')->unsigned();
-                $table->primary(['post_id', 'mentions_post_id']);
+                $table->integer('mentions_user_id')->unsigned();
+                $table->primary(['post_id', 'mentions_user_id']);
             }
         );
 
@@ -70,9 +70,13 @@ return [
         });
 
         $prefix = $schema->getConnection()->getTablePrefix();
-        $schema->getConnection()->statement("INSERT INTO `${prefix}post_mentions_post` SELECT * FROM `${prefix}post_mentions` WHERE `mentions_post_id` IS NOT NULL;");
+        $schema->getConnection()->statement("INSERT INTO `${prefix}post_mentions_post` (`post_id`, `mentions_post_id`)
+            SELECT `post_id`, `mentions_post_id` FROM `${prefix}post_mentions`
+            WHERE `mentions_post_id` IS NOT NULL;");
 
-        $schema->getConnection()->statement("INSERT INTO `${prefix}post_mentions_user` SELECT * FROM `${prefix}post_mentions` WHERE `mentions_user_id` IS NOT NULL;");
+        $schema->getConnection()->statement("INSERT INTO `${prefix}post_mentions_user` (`post_id`, `mentions_user_id`)
+            SELECT `post_id`, `mentions_user_id` FROM `${prefix}post_mentions`
+            WHERE `mentions_user_id` IS NOT NULL;");
 
         // Drop new table
         $schema->dropIfExists('post_mentions');
