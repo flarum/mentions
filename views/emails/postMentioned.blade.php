@@ -3,7 +3,7 @@
 '{replier_username}' => $blueprint->post->user->display_name,
 '{post_number}' => $blueprint->post->number,
 '{title}' => $blueprint->post->discussion->title,
-'{url}' => $url->to('forum')->route('discussion', ['id' => $blueprint->reply->discussion_id, 'near' => $blueprint->reply->number]),
+'{url}' => $url->to('forum')->route('discussion', ['id' => $blueprint->reply->discussion_id]),
 '{reply_number}' => $blueprint->reply->number,
 '{content}' => $blueprint->reply->content
 ]) !!}
