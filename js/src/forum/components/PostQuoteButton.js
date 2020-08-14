@@ -4,24 +4,24 @@ import extract from 'flarum/utils/extract';
 import reply from '../utils/reply';
 
 export default class PostQuoteButton extends Button {
-  view() {
-    const post = extract(this.props, 'post');
-    const content = extract(this.props, 'content');
+  view(vnode) {
+    const post = extract(this.attrs, 'post');
+    const content = extract(this.attrs, 'content');
 
-    this.props.className = 'Button PostQuoteButton';
-    this.props.icon = 'fas fa-quote-left';
-    this.props.children = app.translator.trans('flarum-mentions.forum.post.quote_button');
-    this.props.onclick = () => {
+    this.attrs.className = 'Button PostQuoteButton';
+    this.attrs.icon = 'fas fa-quote-left';
+    vnode.children = app.translator.trans('flarum-mentions.forum.post.quote_button');
+    this.attrs.onclick = () => {
       this.hide();
       reply(post, content);
     };
-    this.props.onmousedown = (e) => e.stopPropagation();
+    this.attrs.onmousedown = (e) => e.stopPropagation();
 
-    return super.view();
+    return super.view(vnode);
   }
 
-  config(isInitialized) {
-    if (isInitialized) return;
+  oncreate(vnode) {
+    super.oncreate(vnode);
 
     $(document).on('mousedown', this.hide.bind(this));
   }

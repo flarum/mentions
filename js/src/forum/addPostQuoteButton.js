@@ -5,10 +5,10 @@ import PostQuoteButton from './components/PostQuoteButton';
 import selectedText from './utils/selectedText';
 
 export default function addPostQuoteButton() {
-  extend(CommentPost.prototype, 'config', function(original, isInitialized) {
-    const post = this.props.post;
+  extend(CommentPost.prototype, 'oncreate', function(original, isInitialized) {
+    const post = this.attrs.post;
 
-    if (isInitialized || post.isHidden() || (app.session.user && !post.discussion().canReply())) return;
+    if (post.isHidden() || (app.session.user && !post.discussion().canReply())) return;
 
     const $postBody = this.$('.Post-body');
 

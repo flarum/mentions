@@ -4,18 +4,21 @@ import PostPreview from 'flarum/components/PostPreview';
 import LoadingIndicator from 'flarum/components/LoadingIndicator';
 
 export default function addPostMentionPreviews() {
-  extend(CommentPost.prototype, 'config', function() {
-    const contentHtml = this.props.post.contentHtml();
+  extend(CommentPost.prototype, 'onupdate', function() {
+    const contentHtml = this.attrs.post.contentHtml();
 
     if (contentHtml === this.oldPostContentHtml || this.isEditing()) return;
 
     this.oldPostContentHtml = contentHtml;
 
-    const parentPost = this.props.post;
+    const parentPost = this.attrs.post;
     const $parentPost = this.$();
 
-    this.$('.UserMention, .PostMention').each(function() {
-      m.route.call(this, this, false, {}, {attrs: {href: this.getAttribute('href')}});
+    this.$('.UserMention, .PostMention').each(function (index, element) {
+      element.addEventListener("click", function (e) {
+        m.route.set(element.getAttribute('href'));
+        e.stopPropagation();
+      })
     });
 
     this.$('.PostMention').each(function() {
