@@ -16,11 +16,13 @@ export default function addPostQuoteButton() {
     // button into it.
     const $container = $('<div class="Post-quoteButtonContainer"></div>');
 
+    const button = new PostQuoteButton(post);
+
     const handler = function(e) {
       setTimeout(() => {
         const content = selectedText($postBody);
         if (content) {
-          const button = new PostQuoteButton(post, content);
+          button.content = content;
           m.render($container[0], button.render());
 
           const rects = window.getSelection().getRangeAt(0).getClientRects();
@@ -32,6 +34,8 @@ export default function addPostQuoteButton() {
             const lastRect = rects[rects.length - 1];
             button.showEnd(lastRect.right, lastRect.bottom);
           }
+        } else {
+          button.hide();
         }
       }, 1);
     };

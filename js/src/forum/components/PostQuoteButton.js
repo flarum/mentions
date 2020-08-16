@@ -1,19 +1,16 @@
 import Fragment from 'flarum/Fragment';
 import icon from 'flarum/helpers/icon';
-import extract from 'flarum/utils/extract';
 
 import reply from '../utils/reply';
 
 export default class PostQuoteButton extends Fragment {
-  constructor(post, content) {
+  constructor(post) {
     super();
 
     this.post = post;
-    this.content = content;
   }
 
   view() {
-
     return (
       <button class="Button PostQuoteButton" onclick={() => {
         this.hide();
