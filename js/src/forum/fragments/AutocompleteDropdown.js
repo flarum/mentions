@@ -6,7 +6,7 @@ export default class AutocompleteDropdown extends Fragment {
   index = 0;
   keyWasJustPressed = false;
 
-  view(vnode) {
+  view() {
     return (
       <ul className="Dropdown-menu MentionsDropdown">
         {this.items.map(item => <li>{item}</li>)}
@@ -23,7 +23,7 @@ export default class AutocompleteDropdown extends Fragment {
   }
 
   hide() {
-    if (this.element) { 
+    if (this.element) {
       this.$().hide();
       this.active = false;
     }
