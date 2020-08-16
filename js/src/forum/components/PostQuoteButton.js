@@ -1,23 +1,28 @@
-import Button from 'flarum/components/Button';
+import Fragment from 'flarum/Fragment';
+import icon from 'flarum/helpers/icon';
 import extract from 'flarum/utils/extract';
 
 import reply from '../utils/reply';
 
-export default class PostQuoteButton extends Button {
-  view(vnode) {
-    const post = extract(this.attrs, 'post');
-    const content = extract(this.attrs, 'content');
+export default class PostQuoteButton extends Fragment {
+  constructor(post, content) {
+    super();
 
-    this.attrs.className = 'Button PostQuoteButton';
-    this.attrs.icon = 'fas fa-quote-left';
-    vnode.children = app.translator.trans('flarum-mentions.forum.post.quote_button');
-    this.attrs.onclick = () => {
-      this.hide();
-      reply(post, content);
-    };
-    this.attrs.onmousedown = (e) => e.stopPropagation();
+    this.post = post;
+    this.content = content;
+  }
 
-    return super.view(vnode);
+  view() {
+
+    return (
+      <button class="Button PostQuoteButton" onclick={() => {
+        this.hide();
+        reply(this.post, this.content);
+      }} mousedown={(e) => e.stopPropagation()}>
+        {icon('fas fa-quote-left', { className: 'Button-icon' })}
+        {app.translator.trans('flarum-mentions.forum.post.quote_button')}
+      </button>
+    );
   }
 
   oncreate(vnode) {
