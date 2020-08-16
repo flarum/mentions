@@ -2,7 +2,6 @@ import username from 'flarum/helpers/username';
 import extractText from 'flarum/utils/extractText';
 
 export function filterUserMentions(tag) {
-  console.log(tag)
   const user = app.store.getBy('users', 'username', tag.getAttribute('username'));
 
   if (user) {
@@ -14,7 +13,6 @@ export function filterUserMentions(tag) {
 }
 
 export function filterPostMentions(tag) {
-  console.log(tag)
   const post = app.store.getById('posts', tag.getAttribute('id'));
 
   if (post) {
