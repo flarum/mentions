@@ -76,6 +76,7 @@ export default function addComposerAutocomplete() {
             const username = usernameHelper(user);
             if (typed) {
               username.children = [highlight(username.text, typed)];
+              delete username.text;
             }
 
             return (
