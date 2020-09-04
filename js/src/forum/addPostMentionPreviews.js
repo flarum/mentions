@@ -14,11 +14,9 @@ export default function addPostMentionPreviews() {
     const parentPost = this.attrs.post;
     const $parentPost = this.$();
 
-    this.$('.UserMention, .PostMention').each(function (index, element) {
-      element.addEventListener("click", function (e) {
-        m.route.set(element.getAttribute('href'));
-        e.stopPropagation();
-      })
+    this.$().on('click', '.UserMention, .PostMention', function (e) {
+      m.route.set(this.getAttribute('href'));
+      e.stopPropagation();
     });
 
     this.$('.PostMention').each(function() {
