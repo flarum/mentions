@@ -25,7 +25,12 @@ export default class PostQuoteButton extends Fragment {
   oncreate(vnode) {
     super.oncreate(vnode);
 
-    $(document).on('mousedown', this.hide.bind(this));
+    this.hideHandler = this.hide.bind(this);
+    $(document).on('mousedown', this.hideHandler);
+  }
+
+  onremove(vnode) {
+    $(document).off('mousedown', this.hideHandler);
   }
 
   show(left, top) {
