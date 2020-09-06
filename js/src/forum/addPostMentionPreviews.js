@@ -4,7 +4,7 @@ import PostPreview from 'flarum/components/PostPreview';
 import LoadingIndicator from 'flarum/components/LoadingIndicator';
 
 export default function addPostMentionPreviews() {
-  extend(CommentPost.prototype, 'onupdate', function() {
+  function addPreviews() {
     const contentHtml = this.attrs.post.contentHtml();
 
     if (contentHtml === this.oldPostContentHtml || this.isEditing()) return;
@@ -123,5 +123,8 @@ export default function addPostMentionPreviews() {
 
       $(document).on('touchend', hidePreview);
     });
-  });
+  }
+
+  extend(CommentPost.prototype, 'oncreate', addPreviews);
+  extend(CommentPost.prototype, 'onupdate', addPreviews);
 }
