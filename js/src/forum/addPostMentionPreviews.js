@@ -16,7 +16,7 @@ export default function addPostMentionPreviews() {
 
     this.$().on('click', '.UserMention, .PostMention', function (e) {
       m.route.set(this.getAttribute('href'));
-      e.stopPropagation();
+      e.preventDefault();
     });
 
     this.$('.PostMention').each(function() {
