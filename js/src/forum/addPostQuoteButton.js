@@ -34,8 +34,6 @@ export default function addPostQuoteButton() {
             const lastRect = rects[rects.length - 1];
             button.showEnd(lastRect.right, lastRect.bottom);
           }
-        } else {
-          button.hide();
         }
       }, 1);
     };

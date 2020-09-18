@@ -22,17 +22,6 @@ export default class PostQuoteButton extends Fragment {
     );
   }
 
-  oncreate(vnode) {
-    super.oncreate(vnode);
-
-    this.hideHandler = this.hide.bind(this);
-    $(document).on('mousedown', this.hideHandler);
-  }
-
-  onremove(vnode) {
-    $(document).off('mousedown', this.hideHandler);
-  }
-
   show(left, top) {
     const $this = this.$().show();
     const parentOffset = $this.offsetParent().offset();
@@ -40,6 +29,10 @@ export default class PostQuoteButton extends Fragment {
     $this
       .css('left', left - parentOffset.left)
       .css('top', top - parentOffset.top);
+
+
+    this.hideHandler = this.hide.bind(this);
+    $(document).on('mouseup', this.hideHandler);
   }
 
   showStart(left, top) {
@@ -56,5 +49,6 @@ export default class PostQuoteButton extends Fragment {
 
   hide() {
     this.$().hide();
+    $(document).off('mouseup', this.hideHandler);
   }
 }
