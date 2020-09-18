@@ -23,10 +23,8 @@ export default class AutocompleteDropdown extends Fragment {
   }
 
   hide() {
-    if (this.element) {
-      this.$().hide();
-      this.active = false;
-    }
+    this.$().hide();
+    this.active = false;
   }
 
   navigate(delta) {
@@ -72,7 +70,7 @@ export default class AutocompleteDropdown extends Fragment {
       }
 
       if (typeof scrollTop !== 'undefined') {
-        $dropdown.stop(true).animate({scrollTop}, 100);
+        $dropdown.stop(true).animate({ scrollTop }, 100);
       }
     }
   }
