@@ -15,7 +15,7 @@ export default class PostQuoteButton extends Fragment {
       <button class="Button PostQuoteButton" onclick={() => {
         this.hide();
         reply(this.post, this.content);
-      }} mousedown={(e) => e.stopPropagation()}>
+      }}>
         {icon('fas fa-quote-left', { className: 'Button-icon' })}
         {app.translator.trans('flarum-mentions.forum.post.quote_button')}
       </button>
