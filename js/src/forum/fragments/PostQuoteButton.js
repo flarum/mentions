@@ -13,7 +13,6 @@ export default class PostQuoteButton extends Fragment {
   view() {
     return (
       <button class="Button PostQuoteButton" onclick={() => {
-        this.hide();
         reply(this.post, this.content);
       }}>
         {icon('fas fa-quote-left', { className: 'Button-icon' })}
