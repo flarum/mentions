@@ -71,10 +71,10 @@ class PostMentionedBlueprint implements BlueprintInterface, MailableInterface
     /**
      * {@inheritdoc}
      */
-    public function getEmailSubject()
+    public function getEmailSubject(TranslatorInterface $translator)
     {
-        return app(TranslatorInterface::class)->trans('flarum-mentions.email.post_mentioned.subject', [
-            '{replier_username}' => $this->post->user->display_name,
+        return $translator->trans('flarum-mentions.email.post_mentioned.subject', [
+            '{replier_display_name}' => $this->post->user->display_name,
             '{title}' => $this->post->discussion->title
         ]);
     }
