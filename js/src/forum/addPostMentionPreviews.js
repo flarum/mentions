@@ -2,6 +2,7 @@ import { extend } from 'flarum/extend';
 import CommentPost from 'flarum/components/CommentPost';
 import PostPreview from 'flarum/components/PostPreview';
 import LoadingIndicator from 'flarum/components/LoadingIndicator';
+import goToPostFromDiscussionPage from './utils/goToPostFromDiscussionPage';
 
 export default function addPostMentionPreviews() {
   function addPreviews() {
@@ -20,11 +21,7 @@ export default function addPostMentionPreviews() {
     });
 
     this.$().on('click', '.PostMention', function (e) {
-      if ($(this).data('discussionid') === parseInt(parentPost.discussion().id())) {
-        app.current.get('stream').goToNumber($(this).data('number'));
-      } else {
-        m.route.set(this.getAttribute('href'));
-      }
+      goToPostFromDiscussionPage($(this).data('discussionid'), parseInt(parentPost.discussion().id()), $(this).data('number'), this.getAttribute('href'));
       e.preventDefault();
     });
 
@@ -87,7 +84,11 @@ export default function addPostMentionPreviews() {
               discussion !== parentPost.discussion()
                 ? <li><span className="PostMention-preview-discussion">{discussion.title()}</span></li>
                 : '',
-              <li>{PostPreview.component({post})}</li>
+              <li>{PostPreview.component({
+                post, onclick: e => {
+                  goToPostFromDiscussionPage(parentPost.discussion().id(), post.discussion().id(), post.number(), app.route.post(post));
+                  e.preventDefault();
+              }})}</li>
             ]);
             positionPreview();
           };

@@ -7,6 +7,7 @@ import PostPreview from 'flarum/components/PostPreview';
 import punctuateSeries from 'flarum/helpers/punctuateSeries';
 import username from 'flarum/helpers/username';
 import icon from 'flarum/helpers/icon';
+import goToPostFromDiscussionPage from './utils/goToPostFromDiscussionPage';
 
 export default function addMentionedByList() {
   Post.prototype.mentionedBy = Model.hasMany('mentionedBy');
@@ -41,7 +42,11 @@ export default function addMentionedByList() {
               <li data-number={reply.number()}>
                 {PostPreview.component({
                   post: reply,
-                  onclick: hidePreview
+                  onclick: e => {
+                    hidePreview();
+                    goToPostFromDiscussionPage(post.discussion().id(), reply.discussion().id(), reply.number(), app.route.post(reply));
+                    e.preventDefault();
+                  }
                 })}
               </li>
             )));
@@ -86,8 +91,12 @@ export default function addMentionedByList() {
 
           return (
             <Link href={app.route.post(reply)}
-               onclick={hidePreview}
-               data-number={reply.number()}>
+              onclick={e => {
+                hidePreview();
+                goToPostFromDiscussionPage(post.discussion().id(), reply.discussion().id(), reply.number(), app.route.post(reply));
+                e.preventDefault();
+              }}
+              data-number={reply.number()}>
               {app.session.user === user ? app.translator.trans('flarum-mentions.forum.post.you_text') : username(user)}
             </Link>
           );
