@@ -14,8 +14,17 @@ export default function addPostMentionPreviews() {
     const parentPost = this.attrs.post;
     const $parentPost = this.$();
 
-    this.$().on('click', '.UserMention, .PostMention', function (e) {
+    this.$().on('click', '.UserMention', function (e) {
       m.route.set(this.getAttribute('href'));
+      e.preventDefault();
+    });
+
+    this.$().on('click', '.PostMention', function (e) {
+      if ($(this).data('discussionid') === parseInt(parentPost.discussion().id())) {
+        app.current.get('stream').goToNumber($(this).data('number'));
+      } else {
+        m.route.set(this.getAttribute('href'));
+      }
       e.preventDefault();
     });
 
