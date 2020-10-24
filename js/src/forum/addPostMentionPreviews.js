@@ -103,7 +103,7 @@ export default function addPostMentionPreviews() {
         }
       };
 
-      $this.on('touchstart', e => {
+      $this.on('touchend', e => {
         if (e.cancelable)
           e.preventDefault();
       });
