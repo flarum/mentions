@@ -103,11 +103,8 @@ export default function addPostMentionPreviews() {
         }
       };
 
-      // On touchscreens we don't want clicking on the post mention
-      // to take us to the actual post
-      // instead we want it to open the preview dropdown.
-      // And only by clicking on the preview dropdown item
-      // will it take us to the actual post.
+      // If on a touch (mobile) device, open the post preview on click.
+      // Users can then click on the preview to go to the post if desired.
       $this.on('touchend', e => {
         if (e.cancelable)
           e.preventDefault();
