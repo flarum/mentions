@@ -103,7 +103,8 @@ export default function addPostMentionPreviews() {
         }
       };
 
-      // If on a touch (mobile) device, open the post preview on click.
+      // On a touch (mobile) device we cannot hover the link to reveal the preview.
+      // Instead we cancel the navigation so that a click reveals the preview.
       // Users can then click on the preview to go to the post if desired.
       $this.on('touchend', e => {
         if (e.cancelable) {
