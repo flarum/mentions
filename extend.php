@@ -8,6 +8,7 @@
  */
 
 use Flarum\Api\Event\WillSerializeData;
+use Flarum\Api\Serializer\BasicPostSerializer;
 use Flarum\Api\Serializer\PostSerializer;
 use Flarum\Event\ConfigurePostsQuery;
 use Flarum\Extend;
@@ -46,6 +47,11 @@ return [
     (new Extend\Notification())
         ->type(PostMentionedBlueprint::class, PostSerializer::class, ['alert'])
         ->type(UserMentionedBlueprint::class, PostSerializer::class, ['alert']),
+
+    (new Extend\ApiSerializer(BasicPostSerializer::class))
+        ->hasMany('mentionedBy', BasicPostSerializer::class)
+        ->hasMany('mentionsPosts', BasicPostSerializer::class)
+        ->hasMany('mentionsUsers', BasicPostSerializer::class),
 
     function (Dispatcher $events) {
         $events->listen(WillSerializeData::class, Listener\FilterVisiblePosts::class);

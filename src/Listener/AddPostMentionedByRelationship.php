@@ -11,8 +11,6 @@ namespace Flarum\Mentions\Listener;
 
 use Flarum\Api\Controller;
 use Flarum\Api\Event\WillGetData;
-use Flarum\Api\Serializer\BasicPostSerializer;
-use Flarum\Event\GetApiRelationship;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class AddPostMentionedByRelationship
@@ -22,27 +20,7 @@ class AddPostMentionedByRelationship
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(GetApiRelationship::class, [$this, 'getApiRelationship']);
         $events->listen(WillGetData::class, [$this, 'includeRelationships']);
-    }
-
-    /**
-     * @param GetApiRelationship $event
-     * @return \Tobscure\JsonApi\Relationship|null
-     */
-    public function getApiRelationship(GetApiRelationship $event)
-    {
-        if ($event->isRelationship(BasicPostSerializer::class, 'mentionedBy')) {
-            return $event->serializer->hasMany($event->model, BasicPostSerializer::class, 'mentionedBy');
-        }
-
-        if ($event->isRelationship(BasicPostSerializer::class, 'mentionsPosts')) {
-            return $event->serializer->hasMany($event->model, BasicPostSerializer::class, 'mentionsPosts');
-        }
-
-        if ($event->isRelationship(BasicPostSerializer::class, 'mentionsUsers')) {
-            return $event->serializer->hasMany($event->model, BasicPostSerializer::class, 'mentionsUsers');
-        }
     }
 
     /**
