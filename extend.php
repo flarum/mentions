@@ -53,20 +53,20 @@ return [
         ->hasMany('mentionsPosts', BasicPostSerializer::class)
         ->hasMany('mentionsUsers', BasicPostSerializer::class),
 
+    (new Extend\Event())
+        ->listen(WillSerializeData::class, Listener\FilterVisiblePosts::class)
+
+        ->listen(Posted::class, Listener\UpdateMentionsMetadataWhenVisible::class)
+        ->listen(Restored::class, Listener\UpdateMentionsMetadataWhenVisible::class)
+        ->listen(Revised::class, Listener\UpdateMentionsMetadataWhenVisible::class)
+
+        ->listen(Hidden::class, Listener\UpdateMentionsMetadataWhenInvisible::class)
+        ->listen(Deleted::class, Listener\UpdateMentionsMetadataWhenInvisible::class)
+
+        ->listen(ConfigurePostsQuery::class, Listener\AddFilterByMentions::class),
+
     function (Dispatcher $events) {
-        $events->listen(WillSerializeData::class, Listener\FilterVisiblePosts::class);
         $events->subscribe(Listener\AddPostMentionedByRelationship::class);
-
-        $events->listen(
-            [Posted::class, Restored::class, Revised::class],
-            Listener\UpdateMentionsMetadataWhenVisible::class
-        );
-        $events->listen(
-            [Deleted::class, Hidden::class],
-            Listener\UpdateMentionsMetadataWhenInvisible::class
-        );
-
-        $events->listen(ConfigurePostsQuery::class, Listener\AddFilterByMentions::class);
 
         $events->listen(Rendering::class, Listener\FormatPostMentions::class);
         $events->listen(Rendering::class, Listener\FormatUserMentions::class);
