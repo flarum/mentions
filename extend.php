@@ -7,13 +7,14 @@
  * LICENSE file that was distributed with this source code.
  */
 
-use Flarum\Api\Event\WillSerializeData;
+use Flarum\Api\Controller;
 use Flarum\Api\Serializer\BasicPostSerializer;
 use Flarum\Api\Serializer\PostSerializer;
 use Flarum\Event\ConfigurePostsQuery;
 use Flarum\Extend;
 use Flarum\Formatter\Event\Rendering;
 use Flarum\Mentions\ConfigureMentions;
+use Flarum\Mentions\FilterVisiblePosts;
 use Flarum\Mentions\Listener;
 use Flarum\Mentions\Notification\PostMentionedBlueprint;
 use Flarum\Mentions\Notification\UserMentionedBlueprint;
@@ -53,21 +54,45 @@ return [
         ->hasMany('mentionsPosts', BasicPostSerializer::class)
         ->hasMany('mentionsUsers', BasicPostSerializer::class),
 
-    (new Extend\Event())
-        ->listen(WillSerializeData::class, Listener\FilterVisiblePosts::class)
+    (new Extend\ApiController(Controller\ShowDiscussionController::class))
+        ->addInclude([
+            'posts.mentionedBy',
+            'posts.mentionedBy.user',
+            'posts.mentionedBy.discussion'
+        ]),
 
+    (new Extend\ApiController(Controller\ShowPostController::class))
+        ->addInclude([
+            'mentionedBy',
+            'mentionedBy.user',
+            'mentionedBy.discussion'
+        ]),
+
+    (new Extend\ApiController(Controller\ListPostsController::class))
+        ->addInclude([
+            'mentionedBy',
+            'mentionedBy.user',
+            'mentionedBy.discussion'
+        ]),
+
+    (new Extend\ApiController(Controller\CreatePostController::class))
+        ->addInclude([
+            'mentionsPosts',
+            'mentionsPosts.mentionedBy'
+        ]),
+
+    (new Extend\ApiController(Controller\AbstractSerializeController::class))
+        ->prepareDataForSerialization(FilterVisiblePosts::class),
+
+    (new Extend\Event())
         ->listen(Posted::class, Listener\UpdateMentionsMetadataWhenVisible::class)
         ->listen(Restored::class, Listener\UpdateMentionsMetadataWhenVisible::class)
         ->listen(Revised::class, Listener\UpdateMentionsMetadataWhenVisible::class)
-
         ->listen(Hidden::class, Listener\UpdateMentionsMetadataWhenInvisible::class)
         ->listen(Deleted::class, Listener\UpdateMentionsMetadataWhenInvisible::class)
-
         ->listen(ConfigurePostsQuery::class, Listener\AddFilterByMentions::class),
 
     function (Dispatcher $events) {
-        $events->subscribe(Listener\AddPostMentionedByRelationship::class);
-
         $events->listen(Rendering::class, Listener\FormatPostMentions::class);
         $events->listen(Rendering::class, Listener\FormatUserMentions::class);
     },
