@@ -55,31 +55,16 @@ return [
         ->hasMany('mentionsUsers', BasicPostSerializer::class),
 
     (new Extend\ApiController(Controller\ShowDiscussionController::class))
-        ->addInclude([
-            'posts.mentionedBy',
-            'posts.mentionedBy.user',
-            'posts.mentionedBy.discussion'
-        ]),
+        ->addInclude(['posts.mentionedBy', 'posts.mentionedBy.user', 'posts.mentionedBy.discussion']),
 
     (new Extend\ApiController(Controller\ShowPostController::class))
-        ->addInclude([
-            'mentionedBy',
-            'mentionedBy.user',
-            'mentionedBy.discussion'
-        ]),
+        ->addInclude(['mentionedBy', 'mentionedBy.user', 'mentionedBy.discussion']),
 
     (new Extend\ApiController(Controller\ListPostsController::class))
-        ->addInclude([
-            'mentionedBy',
-            'mentionedBy.user',
-            'mentionedBy.discussion'
-        ]),
+        ->addInclude(['mentionedBy', 'mentionedBy.user', 'mentionedBy.discussion']),
 
     (new Extend\ApiController(Controller\CreatePostController::class))
-        ->addInclude([
-            'mentionsPosts',
-            'mentionsPosts.mentionedBy'
-        ]),
+        ->addInclude(['mentionsPosts', 'mentionsPosts.mentionedBy']),
 
     (new Extend\ApiController(Controller\AbstractSerializeController::class))
         ->prepareDataForSerialization(FilterVisiblePosts::class),
