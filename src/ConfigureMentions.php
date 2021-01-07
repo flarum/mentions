@@ -50,7 +50,7 @@ class ConfigureMentions
         $tag->filterChain->prepend([static::class, 'addUserId'])
             ->setJS('function(tag) { return flarum.extensions["flarum-mentions"].filterUserMentions(tag); }');
 
-        $config->Preg->match('/\B@(?<username>[a-z0-9_-]+)(?!#)/i', $tagName);
+        $config->Preg->match('/\B@(?<username>[a-z0-9._-]+)(?!#)/i', $tagName);
     }
 
     /**
@@ -88,7 +88,7 @@ class ConfigureMentions
             ->prepend([static::class, 'addPostId'])
             ->setJS('function(tag) { return flarum.extensions["flarum-mentions"].filterPostMentions(tag); }');
 
-        $config->Preg->match('/\B@(?<username>[a-z0-9_-]+)#(?<id>\d+)/i', $tagName);
+        $config->Preg->match('/\B@(?<username>[a-z0-9._-]+)#(?<id>\d+)/i', $tagName);
     }
 
     /**
