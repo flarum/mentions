@@ -1,5 +1,3 @@
-import getCaretCoordinates from 'textarea-caret';
-
 import { extend } from 'flarum/extend';
 import TextEditor from 'flarum/components/TextEditor';
 import TextEditorButton from 'flarum/components/TextEditorButton';
@@ -17,7 +15,7 @@ export default function addComposerAutocomplete() {
   extend(TextEditor.prototype, 'oncreate', function () {
     const $container = $('<div class="ComposerBody-mentionsDropdownContainer"></div>');
     const dropdown = new AutocompleteDropdown();
-    const $textarea = this.$('textarea').wrap('<div class="ComposerBody-mentionsWrapper"></div>');
+    const $editor = this.$('.TextEditor-editor').wrap('<div class="ComposerBody-mentionsWrapper"></div>');
     const searched = [];
     let mentionStart;
     let typed;
@@ -42,21 +40,25 @@ export default function addComposerAutocomplete() {
       .onDown(() => dropdown.navigate(1))
       .onSelect(dropdown.complete.bind(dropdown))
       .onCancel(dropdown.hide.bind(dropdown))
-      .bindTo($textarea);
+      .bindTo($editor);
 
-    $textarea
+    console.log($editor);
+
+    $editor
       .after($container)
       .on('click keyup input', function(e) {
         // Up, down, enter, tab, escape, left, right.
         if ([9, 13, 27, 40, 38, 37, 39].indexOf(e.which) !== -1) return;
 
-        const cursor = this.selectionStart;
+        const selection = app.composer.editor.getSelectionRange();
 
-        if (this.selectionEnd - cursor > 0) return;
+        const cursor = selection[0];
+
+        if (selection[1] - cursor > 0) return;
 
         // Search backwards from the cursor for an '@' symbol. If we find one,
         // we will want to show the autocomplete dropdown!
-        const value = this.value;
+        const value = app.composer.fields.content();
         mentionStart = 0;
         for (let i = cursor - 1; i >= cursor - 30; i--) {
           const character = value.substr(i, 1);
@@ -65,6 +67,8 @@ export default function addComposerAutocomplete() {
             break;
           }
         }
+
+        console.log(mentionStart);
 
         dropdown.hide();
         dropdown.active = false;
@@ -153,7 +157,7 @@ export default function addComposerAutocomplete() {
               m.render($container[0], dropdown.render());
 
               dropdown.show();
-              const coordinates = getCaretCoordinates(this, mentionStart);
+              const coordinates = app.composer.editor.getCaretCoordinates(mentionStart);
               const width = dropdown.$().outerWidth();
               const height = dropdown.$().outerHeight();
               const parent = dropdown.$().offsetParent();
