@@ -42,8 +42,6 @@ export default function addComposerAutocomplete() {
       .onCancel(dropdown.hide.bind(dropdown))
       .bindTo($editor);
 
-    console.log($editor);
-
     $editor
       .after($container)
       .on('click keyup input', function(e) {
@@ -67,8 +65,6 @@ export default function addComposerAutocomplete() {
             break;
           }
         }
-
-        console.log(mentionStart);
 
         dropdown.hide();
         dropdown.active = false;
