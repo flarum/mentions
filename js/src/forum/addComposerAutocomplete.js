@@ -17,7 +17,8 @@ export default function addComposerAutocomplete() {
     const dropdown = new AutocompleteDropdown();
     const $editor = this.$('.TextEditor-editor').wrap('<div class="ComposerBody-mentionsWrapper"></div>');
     const searched = [];
-    let mentionStart;
+    let relMentionStart;
+    let absMentionStart;
     let typed;
     let searchTimeout;
 
@@ -28,7 +29,7 @@ export default function addComposerAutocomplete() {
     const returnedUserIds = new Set(returnedUsers.map(u => u.id()));
 
     const applySuggestion = (replacement) => {
-      app.composer.editor.replaceBeforeCursor(mentionStart - 1, replacement + ' ');
+      app.composer.editor.replaceBeforeCursor(absMentionStart - 1, replacement + ' ');
 
       dropdown.hide();
     };
@@ -56,12 +57,13 @@ export default function addComposerAutocomplete() {
 
         // Search backwards from the cursor for an '@' symbol. If we find one,
         // we will want to show the autocomplete dropdown!
-        const value = app.composer.fields.content();
-        mentionStart = 0;
-        for (let i = cursor - 1; i >= cursor - 30; i--) {
-          const character = value.substr(i, 1);
+        const lastChunk = app.composer.editor.getLastNChars(30);
+        absMentionStart = 0;
+        for (let i = lastChunk.length - 1; i >= 0; i--) {
+          const character = lastChunk.substr(i, 1);
           if (character === '@') {
-            mentionStart = i + 1;
+            relMentionStart = i + 1;
+            absMentionStart = cursor - lastChunk.length + i + 1;
             break;
           }
         }
@@ -69,8 +71,8 @@ export default function addComposerAutocomplete() {
         dropdown.hide();
         dropdown.active = false;
 
-        if (mentionStart) {
-          typed = value.substring(mentionStart, cursor).toLowerCase();
+        if (absMentionStart) {
+          typed = lastChunk.substring(relMentionStart).toLowerCase();
 
           const makeSuggestion = function(user, replacement, content, className = '') {
             const username = usernameHelper(user);
@@ -100,7 +102,7 @@ export default function addComposerAutocomplete() {
               user.displayName()
             ];
 
-            return names.some(value => value.toLowerCase().substr(0, typed.length) === typed);
+            return names.some(name => name.toLowerCase().substr(0, typed.length) === typed);
           };
 
           const buildSuggestions = () => {
@@ -153,7 +155,7 @@ export default function addComposerAutocomplete() {
               m.render($container[0], dropdown.render());
 
               dropdown.show();
-              const coordinates = app.composer.editor.getCaretCoordinates(mentionStart);
+              const coordinates = app.composer.editor.getCaretCoordinates(absMentionStart);
               const width = dropdown.$().outerWidth();
               const height = dropdown.$().outerHeight();
               const parent = dropdown.$().offsetParent();
