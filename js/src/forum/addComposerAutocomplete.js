@@ -61,7 +61,7 @@ export default function addComposerAutocomplete() {
         absMentionStart = 0;
         for (let i = lastChunk.length - 1; i >= 0; i--) {
           const character = lastChunk.substr(i, 1);
-          if (character === '@') {
+          if (character && (i == 0 || /\s/.test(lastChunk.substr(i - 1, 1)))) {
             relMentionStart = i + 1;
             absMentionStart = cursor - lastChunk.length + i + 1;
             break;
