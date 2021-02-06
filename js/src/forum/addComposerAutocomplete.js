@@ -207,7 +207,7 @@ export default function addComposerAutocomplete() {
 
   extend(TextEditor.prototype, 'toolbarItems', function(items) {
     items.add('mention', (
-      <TextEditorButton onclick={() => this.attrs.composer.editor.insertAtCursor('@')} icon="fas fa-at">
+      <TextEditorButton onclick={() => this.attrs.composer.editor.insertAtCursor(' @')} icon="fas fa-at">
         {app.translator.trans('flarum-mentions.forum.composer.mention_tooltip')}
       </TextEditorButton>
     ));
