@@ -21,7 +21,7 @@ function insertMention(post, composer, quote) {
     (quote
       ? '> ' + mention + quote.trim().replace(/\n/g, '\n> ') + '\n\n'
       : mention),
-    true
+    false
   );
 }
 
