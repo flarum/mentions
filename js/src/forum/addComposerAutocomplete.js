@@ -12,10 +12,24 @@ import { truncate } from 'flarum/utils/string';
 import AutocompleteDropdown from './fragments/AutocompleteDropdown';
 
 export default function addComposerAutocomplete() {
-  extend(TextEditor.prototype, 'oncreate', function () {
-    const $container = $('<div class="ComposerBody-mentionsDropdownContainer"></div>');
-    const dropdown = new AutocompleteDropdown();
+  const $container = $('<div class="ComposerBody-mentionsDropdownContainer"></div>');
+  const dropdown = new AutocompleteDropdown();
+
+  extend(TextEditor.prototype, 'oncreate', function (params) {
     const $editor = this.$('.TextEditor-editor').wrap('<div class="ComposerBody-mentionsWrapper"></div>');
+    this.navigator = new KeyboardNavigatable();
+    this.navigator
+      .when(() => dropdown.active)
+      .onUp(() => dropdown.navigate(-1))
+      .onDown(() => dropdown.navigate(1))
+      .onSelect(dropdown.complete.bind(dropdown))
+      .onCancel(dropdown.hide.bind(dropdown))
+      .bindTo($editor);
+
+    $editor
+      .after($container);
+  });
+  extend(TextEditor.prototype, 'buildEditorParams', function (params) {
     const searched = [];
     let relMentionStart;
     let absMentionStart;
@@ -34,21 +48,7 @@ export default function addComposerAutocomplete() {
       dropdown.hide();
     };
 
-    this.navigator = new KeyboardNavigatable();
-    this.navigator
-      .when(() => dropdown.active)
-      .onUp(() => dropdown.navigate(-1))
-      .onDown(() => dropdown.navigate(1))
-      .onSelect(dropdown.complete.bind(dropdown))
-      .onCancel(dropdown.hide.bind(dropdown))
-      .bindTo($editor);
-
-    $editor
-      .after($container)
-      .on('click keyup input', function(e) {
-        // Up, down, enter, tab, escape, left, right.
-        if ([9, 13, 27, 40, 38, 37, 39].indexOf(e.which) !== -1) return;
-
+    params.inputListeners.push(function(e) {
         const selection = app.composer.editor.getSelectionRange();
 
         const cursor = selection[0];
