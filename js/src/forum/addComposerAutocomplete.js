@@ -17,6 +17,7 @@ export default function addComposerAutocomplete() {
 
   extend(TextEditor.prototype, 'oncreate', function (params) {
     const $editor = this.$('.TextEditor-editor').wrap('<div class="ComposerBody-mentionsWrapper"></div>');
+
     this.navigator = new KeyboardNavigatable();
     this.navigator
       .when(() => dropdown.active)
@@ -26,9 +27,9 @@ export default function addComposerAutocomplete() {
       .onCancel(dropdown.hide.bind(dropdown))
       .bindTo($editor);
 
-    $editor
-      .after($container);
+    $editor.after($container);
   });
+
   extend(TextEditor.prototype, 'buildEditorParams', function (params) {
     const searched = [];
     let relMentionStart;
@@ -160,13 +161,20 @@ export default function addComposerAutocomplete() {
               const height = dropdown.$().outerHeight();
               const parent = dropdown.$().offsetParent();
               let left = coordinates.left;
-              let top = coordinates.top - this.scrollTop + 15;
+              let top = coordinates.top + 15;
+
+              // Keep the dropdown inside the editor.
               if (top + height > parent.height()) {
-                top = coordinates.top - this.scrollTop - height - 15;
+                top = coordinates.top - height - 15;
               }
               if (left + width > parent.width()) {
                 left = parent.width() - width;
               }
+
+              // Prevent the dropdown from going off screen on mobile
+              top = Math.max(-parent.offset().top, top);
+              left = Math.max(-parent.offset().left, left);
+
               dropdown.show(left, top);
             } else {
               dropdown.active = false;
