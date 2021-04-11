@@ -15,6 +15,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use s9e\TextFormatter\Parser;
 use s9e\TextFormatter\Renderer;
 use s9e\TextFormatter\Utils;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UnparseUserMentions
 {
@@ -23,9 +24,15 @@ class UnparseUserMentions
      */
     private $slugManager;
 
-    public function __construct(SlugManager $slugManager)
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(SlugManager $slugManager, TranslatorInterface $translator)
     {
         $this->slugManager = $slugManager;
+        $this->translator = $translator;
     }
 
     /**
@@ -53,6 +60,9 @@ class UnparseUserMentions
             if ($user) {
                 $attributes['slug'] = $this->slugManager->forResource(User::class)->toSlug($user);
                 $attributes['displayname'] = $user->display_name;
+            } else {
+                $attributes['slug'] = "";
+                $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }
 
             return $attributes;

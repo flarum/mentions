@@ -47,7 +47,15 @@ class ConfigureMentions
         $tag->attributes->add('slug');
         $tag->attributes->add('id')->filterChain->append('#uint');
 
-        $tag->template = '<a href="{$PROFILE_URL}{@slug}" class="UserMention">@<xsl:value-of select="@displayname"/></a>';
+        $tag->template = '
+            <xsl:choose>
+                <xsl:when test="@slug != \'\'">
+                    <a href="{$PROFILE_URL}{@slug}" class="UserMention">@<xsl:value-of select="@displayname"/></a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <span class="UserMention UserMention--deleted">@<xsl:value-of select="@displayname"/></span>
+                </xsl:otherwise>
+            </xsl:choose>';
         $tag->filterChain->prepend([static::class, 'addUserId'])
             ->setJS('function(tag) { return flarum.extensions["flarum-mentions"].filterUserMentions(tag); }');
 

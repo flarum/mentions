@@ -13,6 +13,7 @@ use Flarum\Http\SlugManager;
 use Flarum\User\User;
 use s9e\TextFormatter\Renderer;
 use s9e\TextFormatter\Utils;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormatUserMentions
 {
@@ -21,9 +22,15 @@ class FormatUserMentions
      */
     private $slugManager;
 
-    public function __construct(SlugManager $slugManager)
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(SlugManager $slugManager, TranslatorInterface $translator)
     {
         $this->slugManager = $slugManager;
+        $this->translator = $translator;
     }
 
     /**
@@ -44,6 +51,9 @@ class FormatUserMentions
             if ($user) {
                 $attributes['slug'] = $this->slugManager->forResource(User::class)->toSlug($user);
                 $attributes['displayname'] = $user->display_name;
+            } else {
+                $attributes['slug'] = "";
+                $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }
 
             return $attributes;
