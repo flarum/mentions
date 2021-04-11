@@ -11,9 +11,6 @@ namespace Flarum\Mentions\Formatter;
 
 use Flarum\Http\SlugManager;
 use Flarum\User\User;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use s9e\TextFormatter\Parser;
-use s9e\TextFormatter\Renderer;
 use s9e\TextFormatter\Utils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -61,7 +58,7 @@ class UnparseUserMentions
                 $attributes['slug'] = $this->slugManager->forResource(User::class)->toSlug($user);
                 $attributes['displayname'] = $user->display_name;
             } else {
-                $attributes['slug'] = "";
+                $attributes['slug'] = '';
                 $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }
 
@@ -78,7 +75,7 @@ class UnparseUserMentions
         }
 
         return preg_replace(
-            '/<' . preg_quote($tagName) . '\b[^>]*(?=\bdisplayname="(.*)")[^>]*(?=\bid="([0-9]+)")[^>]*>@[^<]+<\/' . preg_quote($tagName) . '>/U',
+            '/<'.preg_quote($tagName).'\b[^>]*(?=\bdisplayname="(.*)")[^>]*(?=\bid="([0-9]+)")[^>]*>@[^<]+<\/'.preg_quote($tagName).'>/U',
             '@"$1"#$2',
             $xml
         );

@@ -52,7 +52,7 @@ class FormatUserMentions
                 $attributes['slug'] = $this->slugManager->forResource(User::class)->toSlug($user);
                 $attributes['displayname'] = $user->display_name;
             } else {
-                $attributes['slug'] = "";
+                $attributes['slug'] = '';
                 $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }
 
