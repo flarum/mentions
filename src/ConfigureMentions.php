@@ -9,6 +9,7 @@
 
 namespace Flarum\Mentions;
 
+use Flarum\Http\SlugManager;
 use Flarum\Http\UrlGenerator;
 use Flarum\Post\CommentPost;
 use Flarum\User\User;
@@ -42,15 +43,15 @@ class ConfigureMentions
         $tagName = 'USERMENTION';
 
         $tag = $config->tags->add($tagName);
-        $tag->attributes->add('username');
         $tag->attributes->add('displayname');
+        $tag->attributes->add('slug');
         $tag->attributes->add('id')->filterChain->append('#uint');
 
-        $tag->template = '<a href="{$PROFILE_URL}{@username}" class="UserMention">@<xsl:value-of select="@displayname"/></a>';
+        $tag->template = '<a href="{$PROFILE_URL}{@slug}" class="UserMention">@<xsl:value-of select="@displayname"/></a>';
         $tag->filterChain->prepend([static::class, 'addUserId'])
             ->setJS('function(tag) { return flarum.extensions["flarum-mentions"].filterUserMentions(tag); }');
 
-        $config->Preg->match('/\B@(?<username>[a-z0-9_-]+)(?!#)/i', $tagName);
+        $config->Preg->match('/\B@"(?<displayname>((?!"#[a-z]*[0-9]+).)+)"#(?<id>[0-9]+)\b/i', $tagName);
     }
 
     /**
@@ -60,8 +61,9 @@ class ConfigureMentions
      */
     public static function addUserId($tag)
     {
-        if ($user = User::where('username', $tag->getAttribute('username'))->first()) {
+        if ($user = User::find($tag->getAttribute('id'))) {
             $tag->setAttribute('id', $user->id);
+            $tag->setAttribute('slug', resolve(SlugManager::class)->forResource(User::class)->toSlug($user));
             $tag->setAttribute('displayname', $user->display_name);
 
             return true;

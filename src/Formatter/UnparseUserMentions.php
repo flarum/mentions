@@ -11,10 +11,12 @@ namespace Flarum\Mentions\Formatter;
 
 use Flarum\Http\SlugManager;
 use Flarum\User\User;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use s9e\TextFormatter\Parser;
 use s9e\TextFormatter\Renderer;
 use s9e\TextFormatter\Utils;
 
-class FormatUserMentions
+class UnparseUserMentions
 {
     /**
      * @var SlugManager
@@ -29,12 +31,19 @@ class FormatUserMentions
     /**
      * Configure rendering for user mentions.
      *
-     * @param s9e\TextFormatter\Renderer $renderer
+     * @param string $xml
      * @param mixed $context
-     * @param string|null $xml
-     * @return string $xml to be rendered
+     * @return string $xml to be unparsed
      */
-    public function __invoke(Renderer $renderer, $context, string $xml)
+    public function __invoke($context, string $xml)
+    {
+        $xml = $this->updateUserMentionTags($context, $xml);
+        $xml = $this->removeUserMentionTags($xml);
+
+        return $xml;
+    }
+
+    protected function updateUserMentionTags($context, string $xml)
     {
         $post = $context;
 
@@ -48,5 +57,20 @@ class FormatUserMentions
 
             return $attributes;
         });
+    }
+
+    protected function removeUserMentionTags(string $xml)
+    {
+        $tagName = 'USERMENTION';
+
+        if (strpos($xml, $tagName) === false) {
+            return $xml;
+        }
+
+        return preg_replace(
+            '/<' . preg_quote($tagName) . '\b[^>]*(?=\bdisplayname="(.*)")[^>]*(?=\bid="([0-9]+)")[^>]*>@[^<]+<\/' . preg_quote($tagName) . '>/U',
+            '@"$1"#$2',
+            $xml
+        );
     }
 }

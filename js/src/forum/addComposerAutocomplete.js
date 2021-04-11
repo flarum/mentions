@@ -116,7 +116,7 @@ export default function addComposerAutocomplete() {
                 if (!userMatches(user)) return;
 
                 suggestions.push(
-                  makeSuggestion(user, '@' + user.username(), '', 'MentionsDropdown-user')
+                  makeSuggestion(user, `@"${user.displayName()}"#${user.id()}`, '', 'MentionsDropdown-user')
                 );
               });
             }
