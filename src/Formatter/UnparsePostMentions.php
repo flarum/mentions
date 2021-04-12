@@ -12,9 +12,20 @@ namespace Flarum\Mentions\Formatter;
 use Flarum\Post\CommentPost;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use s9e\TextFormatter\Utils;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UnparsePostMentions
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * Configure rendering for user mentions.
      *
@@ -38,6 +49,14 @@ class UnparsePostMentions
             $post = $post->mentionsPosts->find($attributes['id']);
             if ($post && $post->user) {
                 $attributes['displayname'] = $post->user->display_name;
+            }
+
+            if (! $post) {
+                $attributes['displayname'] = $this->translator->trans('flarum-mentions.forum.post_mention.unknown_text');
+            }
+
+            if ($post && ! $post->user) {
+                $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }
 
             return $attributes;

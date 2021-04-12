@@ -36,6 +36,10 @@ flarum-mentions:
     user:
       mentions_link: Mentions
 
+    # These translations are used in the post mentions
+    post_mention:
+      unknown_text: "[unknown]"
+
   # Translations in this namespace are used in emails sent by the forum.
   email:
 
