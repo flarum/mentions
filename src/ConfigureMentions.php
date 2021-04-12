@@ -86,7 +86,6 @@ class ConfigureMentions
 
         $tag = $config->tags->add($tagName);
 
-        $tag->attributes->add('username');
         $tag->attributes->add('displayname');
         $tag->attributes->add('number')->filterChain->append('#uint');
         $tag->attributes->add('discussionid')->filterChain->append('#uint');
@@ -98,7 +97,7 @@ class ConfigureMentions
             ->prepend([static::class, 'addPostId'])
             ->setJS('function(tag) { return flarum.extensions["flarum-mentions"].filterPostMentions(tag); }');
 
-        $config->Preg->match('/\B@(?<username>[a-z0-9_-]+)#(?<id>\d+)/i', $tagName);
+        $config->Preg->match('/\B@"(?<displayname>((?!"#[a-z]*[0-9]+).)+)"#p(?<id>[0-9]+)\b/i', $tagName);
     }
 
     /**

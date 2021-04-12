@@ -35,6 +35,7 @@ return [
         ->configure(ConfigureMentions::class)
         ->render(Formatter\FormatPostMentions::class)
         ->render(Formatter\FormatUserMentions::class)
+        ->unparse(Formatter\UnparsePostMentions::class)
         ->unparse(Formatter\UnparseUserMentions::class),
 
     (new Extend\Model(Post::class))

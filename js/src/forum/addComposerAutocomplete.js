@@ -142,7 +142,7 @@ export default function addComposerAutocomplete() {
                   .forEach(post => {
                     const user = post.user();
                     suggestions.push(
-                      makeSuggestion(user, '@' + user.username() + '#' + post.id(), [
+                      makeSuggestion(user, `@"${user.displayName()}"#p${post.id()}`, [
                         app.translator.trans('flarum-mentions.forum.composer.reply_to_post_text', {number: post.number()}), ' — ',
                         truncate(post.contentPlain(), 200)
                       ], 'MentionsDropdown-post')
