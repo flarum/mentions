@@ -9,8 +9,6 @@
 
 namespace Flarum\Mentions\Formatter;
 
-use Flarum\Post\CommentPost;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use s9e\TextFormatter\Utils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -72,7 +70,7 @@ class UnparsePostMentions
         }
 
         return preg_replace(
-            '/<' . preg_quote($tagName) . '\b[^>]*(?=\bdisplayname="(.*)")[^>]*(?=\bid="([0-9]+)")[^>]*>@[^<]+<\/' . preg_quote($tagName) . '>/U',
+            '/<'.preg_quote($tagName).'\b[^>]*(?=\bdisplayname="(.*)")[^>]*(?=\bid="([0-9]+)")[^>]*>@[^<]+<\/'.preg_quote($tagName).'>/U',
             '@"$1"#p$2',
             $xml
         );
