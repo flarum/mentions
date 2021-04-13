@@ -57,6 +57,10 @@ class UnparsePostMentions
                 $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }
 
+            if (strpos($attributes['displayname'], '"#') !== false) {
+                $attributes['displayname'] = preg_replace('/"#[a-z]{0,3}[0-9]+/', '_', $attributes['displayname']);
+            }
+
             return $attributes;
         });
     }
