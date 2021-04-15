@@ -11,6 +11,8 @@ export function filterUserMentions(tag) {
 
     return true;
   }
+
+  tag.invalidate();
 }
 
 export function filterPostMentions(tag) {

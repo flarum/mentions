@@ -73,6 +73,8 @@ class ConfigureMentions
 
             return true;
         }
+
+        $tag->invalidate();
     }
 
     private function configurePostMentions(Configurator $config)
