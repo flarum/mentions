@@ -18,6 +18,11 @@ use s9e\TextFormatter\Configurator;
 class ConfigureMentions
 {
     /**
+     * @var SlugManager
+     */
+    protected static $slugManager;
+
+    /**
      * @var UrlGenerator
      */
     protected $url;
@@ -69,9 +74,12 @@ class ConfigureMentions
      */
     public static function addUserId($tag)
     {
+        if (! self::$slugManager)
+            self::$slugManager = resolve(SlugManager::class);
+
         if ($user = User::find($tag->getAttribute('id'))) {
             $tag->setAttribute('id', $user->id);
-            $tag->setAttribute('slug', resolve(SlugManager::class)->forResource(User::class)->toSlug($user));
+            $tag->setAttribute('slug', self::$slugManager->forResource(User::class)->toSlug($user));
             $tag->setAttribute('displayname', $user->display_name);
 
             return true;
