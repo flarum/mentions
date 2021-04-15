@@ -54,10 +54,13 @@ class UnparseUserMentions
         return Utils::replaceAttributes($xml, 'USERMENTION', function ($attributes) use ($post) {
             $user = $post->mentionsUsers->find($attributes['id']);
 
+            $attributes['deleted'] = false;
+
             if ($user) {
                 $attributes['slug'] = $this->slugManager->forResource(User::class)->toSlug($user);
                 $attributes['displayname'] = $user->display_name;
             } else {
+                $attributes['deleted'] = true;
                 $attributes['slug'] = '';
                 $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }

@@ -53,7 +53,7 @@ class ConfigureMentions
 
         $tag->template = '
             <xsl:choose>
-                <xsl:when test="@slug != \'\'">
+                <xsl:when test="@deleted != 1">
                     <a href="{$PROFILE_URL}{@slug}" class="UserMention">@<xsl:value-of select="@displayname"/></a>
                 </xsl:when>
                 <xsl:otherwise>
