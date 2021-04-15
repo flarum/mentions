@@ -36,6 +36,7 @@ export default function addComposerAutocomplete() {
     let relMentionStart;
     let absMentionStart;
     let typed;
+    let matchTyped;
     let searchTimeout;
 
     // We store users returned from an API here to preserve order in which they are returned
@@ -75,6 +76,8 @@ export default function addComposerAutocomplete() {
 
         if (absMentionStart) {
           typed = lastChunk.substring(relMentionStart).toLowerCase();
+          matchTyped = typed.match(/"((?:(?!"#).)+)/);
+          typed = (matchTyped && matchTyped[1]) || typed;
 
           const makeSuggestion = function(user, replacement, content, className = '') {
             const username = usernameHelper(user);
