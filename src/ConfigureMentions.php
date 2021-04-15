@@ -49,7 +49,6 @@ class ConfigureMentions
 
         $tag = $config->tags->add($tagName);
         $tag->attributes->add('displayname');
-        $tag->attributes->add('slug');
         $tag->attributes->add('id')->filterChain->append('#uint');
 
         $tag->template = '
