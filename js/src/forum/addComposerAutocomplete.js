@@ -10,6 +10,7 @@ import KeyboardNavigatable from 'flarum/utils/KeyboardNavigatable';
 import { truncate } from 'flarum/utils/string';
 
 import AutocompleteDropdown from './fragments/AutocompleteDropdown';
+import cleanDisplayName from './utils/cleanDisplayName';
 
 export default function addComposerAutocomplete() {
   const $container = $('<div class="ComposerBody-mentionsDropdownContainer"></div>');
@@ -116,7 +117,7 @@ export default function addComposerAutocomplete() {
                 if (!userMatches(user)) return;
 
                 suggestions.push(
-                  makeSuggestion(user, `@"${user.displayName().replace(/"#[a-z]{0,3}[0-9]+/, '_')}"#${user.id()}`, '', 'MentionsDropdown-user')
+                  makeSuggestion(user, `@"${cleanDisplayName(user)}"#${user.id()}`, '', 'MentionsDropdown-user')
                 );
               });
             }
@@ -142,7 +143,7 @@ export default function addComposerAutocomplete() {
                   .forEach(post => {
                     const user = post.user();
                     suggestions.push(
-                      makeSuggestion(user, `@"${user.displayName().replace(/"#[a-z]{0,3}[0-9]+/, '_')}"#p${post.id()}`, [
+                      makeSuggestion(user, `@"${cleanDisplayName(user)}"#p${post.id()}`, [
                         app.translator.trans('flarum-mentions.forum.composer.reply_to_post_text', {number: post.number()}), ' — ',
                         truncate(post.contentPlain(), 200)
                       ], 'MentionsDropdown-post')
