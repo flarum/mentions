@@ -9,7 +9,6 @@
 
 namespace Flarum\Mentions;
 
-use Flarum\Http\SlugManager;
 use Flarum\Http\UrlGenerator;
 use Flarum\Post\CommentPost;
 use Flarum\User\User;
@@ -17,11 +16,6 @@ use s9e\TextFormatter\Configurator;
 
 class ConfigureMentions
 {
-    /**
-     * @var SlugManager
-     */
-    protected static $slugManager;
-
     /**
      * @var UrlGenerator
      */
@@ -73,13 +67,8 @@ class ConfigureMentions
      */
     public static function addUserId($tag)
     {
-        if (! self::$slugManager) {
-            self::$slugManager = resolve(SlugManager::class);
-        }
-
         if ($user = User::find($tag->getAttribute('id'))) {
             $tag->setAttribute('id', $user->id);
-            $tag->setAttribute('slug', self::$slugManager->forResource(User::class)->toSlug($user));
             $tag->setAttribute('displayname', $user->display_name);
 
             return true;

@@ -9,7 +9,6 @@
 
 namespace Flarum\Mentions\Formatter;
 
-use Flarum\Http\SlugManager;
 use Flarum\User\User;
 use s9e\TextFormatter\Utils;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,18 +16,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UnparseUserMentions
 {
     /**
-     * @var SlugManager
-     */
-    private $slugManager;
-
-    /**
      * @var TranslatorInterface
      */
     private $translator;
 
-    public function __construct(SlugManager $slugManager, TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->slugManager = $slugManager;
         $this->translator = $translator;
     }
 
@@ -57,11 +50,9 @@ class UnparseUserMentions
             $attributes['deleted'] = false;
 
             if ($user) {
-                $attributes['slug'] = $this->slugManager->forResource(User::class)->toSlug($user);
                 $attributes['displayname'] = $user->display_name;
             } else {
                 $attributes['deleted'] = true;
-                $attributes['slug'] = '';
                 $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }
 
