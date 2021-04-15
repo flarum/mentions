@@ -73,8 +73,9 @@ class ConfigureMentions
      */
     public static function addUserId($tag)
     {
-        if (! self::$slugManager)
+        if (! self::$slugManager) {
             self::$slugManager = resolve(SlugManager::class);
+        }
 
         if ($user = User::find($tag->getAttribute('id'))) {
             $tag->setAttribute('id', $user->id);
