@@ -44,7 +44,7 @@ class ConfigureMentions
 
     private function configureUserMentions(Configurator $config)
     {
-        $allow_username_format = $this->settings->get('flarum-mentions.allow_username_format');
+        $allow_username_format = (bool) $this->settings->get('flarum-mentions.allow_username_format');
 
         $config->rendering->parameters['PROFILE_URL'] = $this->url->to('forum')->route('user', ['username' => '']);
 
