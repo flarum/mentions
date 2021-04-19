@@ -76,8 +76,14 @@ class UserMentionsTest extends TestCase
     /**
      * @test
      */
-    public function mentioning_a_valid_user_with_old_format_doesnt_work()
+    public function mentioning_a_valid_user_with_old_format_doesnt_work_if_off()
     {
+        $this->prepareDatabase([
+            'settings' => [
+                ['key' => 'flarum-mentions.allow_username_format', 'value' => '0']
+            ]
+        ]);
+
         $this->app();
         $this->recalculateDisplayNameDriver();
 
@@ -105,6 +111,46 @@ class UserMentionsTest extends TestCase
         $this->assertStringContainsString('@potato', $response['data']['attributes']['content']);
         $this->assertStringNotContainsString('UserMention', $response['data']['attributes']['contentHtml']);
         $this->assertCount(0, CommentPost::find($response['data']['id'])->mentionsUsers);
+    }
+
+    /**
+     * @test
+     */
+    public function mentioning_a_valid_user_with_old_format_works_if_on()
+    {
+        $this->prepareDatabase([
+            'settings' => [
+                ['key' => 'flarum-mentions.allow_username_format', 'value' => '1']
+            ]
+        ]);
+
+        $this->app();
+        $this->recalculateDisplayNameDriver();
+
+        $response = $this->send(
+            $this->request('POST', '/api/posts', [
+                'authenticatedAs' => 1,
+                'json' => [
+                    'data' => [
+                        'attributes' => [
+                            'content' => '@potato',
+                        ],
+                        'relationships' => [
+                            'discussion' => ['data' => ['id' => 2]],
+                        ],
+                    ],
+                ],
+            ])
+        );
+
+        $this->assertEquals(201, $response->getStatusCode());
+
+        $response = json_decode($response->getBody(), true);
+
+        $this->assertStringContainsString('@POTATO$', $response['data']['attributes']['contentHtml']);
+        $this->assertEquals('@"POTATO$"#3', $response['data']['attributes']['content']);
+        $this->assertStringContainsString('UserMention', $response['data']['attributes']['contentHtml']);
+        $this->assertNotNull(CommentPost::find($response['data']['id'])->mentionsUsers->find(3));
     }
 
     /**
