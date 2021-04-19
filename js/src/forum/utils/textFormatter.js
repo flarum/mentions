@@ -2,7 +2,12 @@ import username from 'flarum/helpers/username';
 import extractText from 'flarum/utils/extractText';
 
 export function filterUserMentions(tag) {
-  const user = app.store.getById('users', tag.getAttribute('id'));
+  let user;
+
+  if (tag.hasAttribute('username'))
+    user = app.store.getBy('users', 'username', tag.getAttribute('username'));
+  else
+    user = app.store.getById('users', tag.getAttribute('id'));
 
   if (user) {
     tag.setAttribute('id', user.id());

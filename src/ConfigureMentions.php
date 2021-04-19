@@ -11,11 +11,17 @@ namespace Flarum\Mentions;
 
 use Flarum\Http\UrlGenerator;
 use Flarum\Post\CommentPost;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
 use s9e\TextFormatter\Configurator;
 
 class ConfigureMentions
 {
+    /**
+     * @var SettingsRepositoryInterface
+     */
+    protected $settings;
+
     /**
      * @var UrlGenerator
      */
@@ -24,8 +30,9 @@ class ConfigureMentions
     /**
      * @param UrlGenerator $url
      */
-    public function __construct(UrlGenerator $url)
+    public function __construct(UrlGenerator $url, SettingsRepositoryInterface $settings)
     {
+        $this->settings = $settings;
         $this->url = $url;
     }
 
@@ -37,6 +44,8 @@ class ConfigureMentions
 
     private function configureUserMentions(Configurator $config)
     {
+        $allow_username_format = $this->settings->get('flarum-mentions.allow_username_format');
+
         $config->rendering->parameters['PROFILE_URL'] = $this->url->to('forum')->route('user', ['username' => '']);
 
         $tagName = 'USERMENTION';
@@ -58,6 +67,10 @@ class ConfigureMentions
             ->setJS('function(tag) { return flarum.extensions["flarum-mentions"].filterUserMentions(tag); }');
 
         $config->Preg->match('/\B@"(?<displayname>((?!"#[a-z]{0,3}[0-9]+).)+)"#(?<id>[0-9]+)\b/', $tagName);
+
+        if ($allow_username_format) {
+            $config->Preg->match('/\B@(?<username>[a-z0-9_-]+)(?!#)/i', $tagName);
+        }
     }
 
     /**
@@ -67,7 +80,13 @@ class ConfigureMentions
      */
     public static function addUserId($tag)
     {
-        if ($user = User::find($tag->getAttribute('id'))) {
+        if ($tag->hasAttribute('username')) {
+            $user = User::where('username', $tag->getAttribute('username'))->first();
+        } else {
+            $user = User::find($tag->getAttribute('id'));
+        }
+
+        if ($user) {
             $tag->setAttribute('id', $user->id);
             $tag->setAttribute('displayname', $user->display_name);
 
