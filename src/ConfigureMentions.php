@@ -18,11 +18,6 @@ use s9e\TextFormatter\Configurator;
 class ConfigureMentions
 {
     /**
-     * @var SettingsRepositoryInterface
-     */
-    protected $settings;
-
-    /**
      * @var UrlGenerator
      */
     protected $url;
@@ -30,9 +25,8 @@ class ConfigureMentions
     /**
      * @param UrlGenerator $url
      */
-    public function __construct(UrlGenerator $url, SettingsRepositoryInterface $settings)
+    public function __construct(UrlGenerator $url)
     {
-        $this->settings = $settings;
         $this->url = $url;
     }
 
@@ -44,8 +38,6 @@ class ConfigureMentions
 
     private function configureUserMentions(Configurator $config)
     {
-        $allow_username_format = (bool) $this->settings->get('flarum-mentions.allow_username_format');
-
         $config->rendering->parameters['PROFILE_URL'] = $this->url->to('forum')->route('user', ['username' => '']);
 
         $tagName = 'USERMENTION';
@@ -67,10 +59,7 @@ class ConfigureMentions
             ->setJS('function(tag) { return flarum.extensions["flarum-mentions"].filterUserMentions(tag); }');
 
         $config->Preg->match('/\B@"(?<displayname>((?!"#[a-z]{0,3}[0-9]+).)+)"#(?<id>[0-9]+)\b/', $tagName);
-
-        if ($allow_username_format) {
-            $config->Preg->match('/\B@(?<username>[a-z0-9_-]+)(?!#)/i', $tagName);
-        }
+        $config->Preg->match('/\B@(?<username>[a-z0-9_-]+)(?!#)/i', $tagName);
     }
 
     /**
@@ -80,13 +69,15 @@ class ConfigureMentions
      */
     public static function addUserId($tag)
     {
-        if ($tag->hasAttribute('username')) {
+        $allow_username_format = (bool) resolve(SettingsRepositoryInterface::class)->get('flarum-mentions.allow_username_format');
+
+        if ($tag->hasAttribute('username') && $allow_username_format) {
             $user = User::where('username', $tag->getAttribute('username'))->first();
-        } else {
+        } elseif ($tag->hasAttribute('id')) {
             $user = User::find($tag->getAttribute('id'));
         }
 
-        if ($user) {
+        if (isset($user)) {
             $tag->setAttribute('id', $user->id);
             $tag->setAttribute('displayname', $user->display_name);
 

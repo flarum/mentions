@@ -75,6 +75,9 @@ return [
     (new Extend\ApiController(Controller\AbstractSerializeController::class))
         ->prepareDataForSerialization(FilterVisiblePosts::class),
 
+    (new Extend\Settings)
+        ->serializeToForum('allowUsernameMentionFormat', 'flarum-mentions.allow_username_format', 'boolval'),
+
     (new Extend\Event())
         ->listen(Posted::class, Listener\UpdateMentionsMetadataWhenVisible::class)
         ->listen(Restored::class, Listener\UpdateMentionsMetadataWhenVisible::class)

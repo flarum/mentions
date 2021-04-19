@@ -4,9 +4,9 @@ import extractText from 'flarum/utils/extractText';
 export function filterUserMentions(tag) {
   let user;
 
-  if (tag.hasAttribute('username'))
+  if (app.forum.attribute('allowUsernameMentionFormat') && tag.hasAttribute('username'))
     user = app.store.getBy('users', 'username', tag.getAttribute('username'));
-  else
+  else if (tag.hasAttribute('id'))
     user = app.store.getById('users', tag.getAttribute('id'));
 
   if (user) {
