@@ -35,12 +35,18 @@ class UnparseUserMentions
     public function __invoke($context, string $xml)
     {
         $xml = $this->updateUserMentionTags($context, $xml);
-        $xml = $this->removeUserMentionTags($xml);
+        $xml = $this->unparseUserMentionTags($xml);
 
         return $xml;
     }
-
-    protected function updateUserMentionTags($context, string $xml)
+    /**
+     * Updates XML user mention tags before unparsing so that unparsing uses new display names.
+     *
+     * @param mixed $context
+     * @param string $xml : Parsed text.
+     * @return string $xml : Updated XML tags;
+     */
+    protected function updateUserMentionTags($context, string $xml): string
     {
         $post = $context;
 
@@ -61,7 +67,13 @@ class UnparseUserMentions
         });
     }
 
-    protected function removeUserMentionTags(string $xml)
+    /**
+     * Transforms user mention tags from XML to raw unparsed content with updated format and display name.
+     *
+     * @param string $xml : Parsed text.
+     * @return string : Unparsed text.
+     */
+    protected function unparseUserMentionTags(string $xml): string
     {
         $tagName = 'USERMENTION';
 

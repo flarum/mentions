@@ -34,12 +34,19 @@ class UnparsePostMentions
     public function __invoke($context, string $xml)
     {
         $xml = $this->updatePostMentionTags($context, $xml);
-        $xml = $this->removePostMentionTags($xml);
+        $xml = $this->unparsePostMentionTags($xml);
 
         return $xml;
     }
 
-    protected function updatePostMentionTags($context, string $xml)
+    /**
+     * Updates XML post mention tags before unparsing so that unparsing uses new display names.
+     *
+     * @param mixed $context
+     * @param string $xml : Parsed text.
+     * @return string $xml : Updated XML tags;
+     */
+    protected function updatePostMentionTags($context, string $xml): string
     {
         $post = $context;
 
@@ -65,7 +72,13 @@ class UnparsePostMentions
         });
     }
 
-    protected function removePostMentionTags(string $xml)
+    /**
+     * Transforms post mention tags from XML to raw unparsed content with updated format and display name.
+     *
+     * @param string $xml : Parsed text.
+     * @return string : Unparsed text.
+     */
+    protected function unparsePostMentionTags(string $xml): string
     {
         $tagName = 'POSTMENTION';
 
