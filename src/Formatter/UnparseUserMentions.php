@@ -39,6 +39,7 @@ class UnparseUserMentions
 
         return $xml;
     }
+
     /**
      * Updates XML user mention tags before unparsing so that unparsing uses new display names.
      *
