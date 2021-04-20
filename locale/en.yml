@@ -48,7 +48,7 @@ flarum-mentions:
 
     # These translations are used in the post mentions
     post_mention:
-      unknown_text: "[unknown]"
+      deleted_text: "[unknown]"
 
   # Translations in this namespace are used in emails sent by the forum.
   email:

@@ -295,7 +295,7 @@ class PostMentionsTest extends TestCase
     {
         $this->app();
         $this->recalculateDisplayNameDriver();
-        $unknown_text = $this->app()->getContainer()->make('translator')->trans('flarum-mentions.forum.post_mention.unknown_text');
+        $deleted_text = $this->app()->getContainer()->make('translator')->trans('flarum-mentions.forum.post_mention.deleted_text');
 
         $response = $this->send(
             $this->request('GET', '/api/posts/7', [
@@ -307,8 +307,8 @@ class PostMentionsTest extends TestCase
 
         $response = json_decode($response->getBody(), true);
 
-        $this->assertStringContainsString($unknown_text, $response['data']['attributes']['contentHtml']);
-        $this->assertStringContainsString('@"'.$unknown_text.'"#p2010', $response['data']['attributes']['content']);
+        $this->assertStringContainsString($deleted_text, $response['data']['attributes']['contentHtml']);
+        $this->assertStringContainsString('@"'.$deleted_text.'"#p2010', $response['data']['attributes']['content']);
         $this->assertStringContainsString('PostMention', $response['data']['attributes']['contentHtml']);
         $this->assertStringNotContainsString('POTATO$', $response['data']['attributes']['contentHtml']);
         $this->assertStringNotContainsString('POTATO$', $response['data']['attributes']['content']);
@@ -322,7 +322,7 @@ class PostMentionsTest extends TestCase
     {
         $this->app();
         $this->recalculateDisplayNameDriver();
-        $unknown_text = $this->app()->getContainer()->make('translator')->trans('flarum-mentions.forum.post_mention.unknown_text');
+        $deleted_text = $this->app()->getContainer()->make('translator')->trans('flarum-mentions.forum.post_mention.deleted_text');
 
         $response = $this->send(
             $this->request('GET', '/api/posts/8', [
@@ -334,8 +334,8 @@ class PostMentionsTest extends TestCase
 
         $response = json_decode($response->getBody(), true);
 
-        $this->assertStringContainsString($unknown_text, $response['data']['attributes']['contentHtml']);
-        $this->assertStringContainsString('@"'.$unknown_text.'"#p2020', $response['data']['attributes']['content']);
+        $this->assertStringContainsString($deleted_text, $response['data']['attributes']['contentHtml']);
+        $this->assertStringContainsString('@"'.$deleted_text.'"#p2020', $response['data']['attributes']['content']);
         $this->assertStringContainsString('PostMention', $response['data']['attributes']['contentHtml']);
         $this->assertStringNotContainsString('POTATO$', $response['data']['attributes']['contentHtml']);
         $this->assertStringNotContainsString('POTATO$', $response['data']['attributes']['content']);

@@ -48,7 +48,7 @@ class FormatPostMentions
             $attributes['deleted'] = false;
 
             if (! $post) {
-                $attributes['displayname'] = $this->translator->trans('flarum-mentions.forum.post_mention.unknown_text');
+                $attributes['displayname'] = $this->translator->trans('flarum-mentions.forum.post_mention.deleted_text');
                 $attributes['deleted'] = true;
             }
 
