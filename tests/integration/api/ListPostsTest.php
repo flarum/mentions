@@ -12,7 +12,6 @@ namespace Flarum\Tests\integration\api\discussions;
 use Carbon\Carbon;
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
-use Flarum\User\User;
 use Illuminate\Support\Arr;
 
 class ListTest extends TestCase
