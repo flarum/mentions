@@ -13,24 +13,12 @@ import { throttle } from 'flarum/common/utils/throttleDebounce';
 import AutocompleteDropdown from './fragments/AutocompleteDropdown';
 import getMentionText from './utils/getMentionText';
 
-import type Post from 'flarum/common/models/Post';
-import type User from 'flarum/common/models/User';
-import type ItemList from 'flarum/common/utils/ItemList';
-import Mithril from 'mithril';
-
 const throttledSearch = throttle(
   250, // 250ms timeout
-  function (
-    typed: string,
-    searched: string[],
-    returnedUsers: User[],
-    returnedUserIds: number[],
-    dropdown: AutocompleteDropdown,
-    buildSuggestions: () => void
-  ) {
+  function (typed, searched, returnedUsers, returnedUserIds, dropdown, buildSuggestions) {
     const typedLower = typed.toLowerCase();
     if (searched.indexOf(typedLower) === -1) {
-      app.store.find('users', { filter: { q: typed }, page: { limit: 5 } }).then((results: User[]) => {
+      app.store.find('users', { filter: { q: typed }, page: { limit: 5 } }).then((results) => {
         results.forEach((u) => {
           if (!returnedUserIds.has(u.id())) {
             returnedUserIds.add(u.id());
@@ -42,14 +30,13 @@ const throttledSearch = throttle(
       searched.push(typedLower);
     }
   }
-  // false
 );
 
 export default function addComposerAutocomplete() {
   const $container = $('<div class="ComposerBody-mentionsDropdownContainer"></div>');
   const dropdown = new AutocompleteDropdown();
 
-  extend(TextEditor.prototype, 'oncreate', function (this: TextEditor) {
+  extend(TextEditor.prototype, 'oncreate', function () {
     const $editor = this.$('.TextEditor-editor').wrap('<div class="ComposerBody-mentionsWrapper"></div>');
 
     this.navigator = new KeyboardNavigatable();
@@ -64,11 +51,11 @@ export default function addComposerAutocomplete() {
     $editor.after($container);
   });
 
-  extend(TextEditor.prototype, 'buildEditorParams', function (this: TextEditor, params: ReturnType<TextEditor['buildEditorParams']>) {
-    const searched: string[] = [];
-    let relMentionStart: number;
-    let absMentionStart: number;
-    let typed: string;
+  extend(TextEditor.prototype, 'buildEditorParams', function (params) {
+    const searched = [];
+    let relMentionStart;
+    let absMentionStart;
+    let typed;
     let matchTyped;
 
     // We store users returned from an API here to preserve order in which they are returned
@@ -77,7 +64,7 @@ export default function addComposerAutocomplete() {
     const returnedUsers = Array.from(app.store.all('users'));
     const returnedUserIds = new Set(returnedUsers.map((u) => u.id()));
 
-    const applySuggestion = (replacement: string) => {
+    const applySuggestion = (replacement) => {
       app.composer.editor.replaceBeforeCursor(absMentionStart - 1, replacement + ' ');
 
       dropdown.hide();
@@ -111,11 +98,11 @@ export default function addComposerAutocomplete() {
         matchTyped = typed.match(/^"((?:(?!"#).)+)$/);
         typed = (matchTyped && matchTyped[1]) || typed;
 
-        const makeSuggestion = function (user: User, replacement: string, content: string | string[], className: string = ''): Mithril.Vnode {
+        const makeSuggestion = function (user, replacement, content, className = '') {
           const username = usernameHelper(user);
 
           if (typed) {
-            username.children = [highlight(username.text as string, typed)];
+            username.children = [highlight(username.text, typed)];
             delete username.text;
           }
 
@@ -164,7 +151,8 @@ export default function addComposerAutocomplete() {
             const discussion = (composerPost && composerPost.discussion()) || composerAttrs.discussion;
 
             if (discussion) {
-              (discussion.posts() as Post[])
+              discussion
+                .posts()
                 // Filter to only comment posts, and replies before this message
                 .filter((post) => post && post.contentType() === 'comment' && (!composerPost || post.number() < composerPost.number()))
                 // Sort by new to old
@@ -244,7 +232,7 @@ export default function addComposerAutocomplete() {
     });
   });
 
-  extend(TextEditor.prototype, 'toolbarItems', function (items: ItemList) {
+  extend(TextEditor.prototype, 'toolbarItems', function (items) {
     items.add(
       'mention',
       <TextEditorButton onclick={() => this.attrs.composer.editor.insertAtCursor(' @')} icon="fas fa-at">

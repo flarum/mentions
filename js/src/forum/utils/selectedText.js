@@ -1,10 +1,10 @@
 /**
  * Finds the selected text in the provided composer body.
  */
-export default function selectedText(body): string {
+export default function selectedText(body) {
   const selection = window.getSelection();
 
-  if (selection?.rangeCount) {
+  if (selection && selection.rangeCount) {
     const range = selection.getRangeAt(0);
     const parent = range.commonAncestorContainer;
 

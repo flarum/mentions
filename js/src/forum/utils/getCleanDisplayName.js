@@ -1,13 +1,11 @@
-import type User from 'flarum/common/models/User';
-
 /**
  * Whether to use the old mentions format.
  *
  * `'@username'` or `'@"Display name"'`
  */
-export const ShouldUseOldFormat = (): boolean => app.forum.data.attributes.allowUsernameMentionFormat || false;
+export const ShouldUseOldFormat = () => app.forum.data.attributes.allowUsernameMentionFormat || false;
 
-const GetDeletedUserText = (): string => app.translator.trans('core.lib.username.deleted_text') as string;
+const GetDeletedUserText = () => app.translator.trans('core.lib.username.deleted_text');
 
 /**
  * Fetches a user's username or display name.
@@ -17,10 +15,10 @@ const GetDeletedUserText = (): string => app.translator.trans('core.lib.username
  * @param user An instance of the User model to fetch the username for
  * @param useDisplayName If `true`, uses `user.displayName()`, otherwise, uses `user.username()`
  */
-export default function cleanDisplayName(user: User, useDisplayName: boolean = true): string {
+export default function cleanDisplayName(user, useDisplayName = true) {
   if (!user) return GetDeletedUserText().replace(/"#[a-z]{0,3}[0-9]+/, '_');
 
-  const text: string = (useDisplayName ? user.displayName() : user.username()) || GetDeletedUserText();
+  const text = (useDisplayName ? user.displayName() : user.username()) || GetDeletedUserText();
 
   return text.replace(/"#[a-z]{0,3}[0-9]+/, '_');
 }

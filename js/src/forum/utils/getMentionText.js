@@ -1,4 +1,3 @@
-import type User from 'flarum/common/models/User';
 import cleanDisplayName, { ShouldUseOldFormat } from './getCleanDisplayName';
 
 /**
@@ -19,7 +18,7 @@ import cleanDisplayName, { ShouldUseOldFormat } from './getCleanDisplayName';
  * // '@username'
  * getMentionText(User) // User's username is 'username'
  */
-export default function getMentionText(user: User, postId?: number): string {
+export default function getMentionText(user, postId) {
   if (postId === undefined) {
     if (ShouldUseOldFormat()) {
       // Plain @username
