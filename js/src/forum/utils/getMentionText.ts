@@ -1,5 +1,5 @@
 import type User from 'flarum/common/models/User';
-import cleanDisplayName, { ShouldUseOldFormat } from './cleanDisplayName';
+import cleanDisplayName, { ShouldUseOldFormat } from './getCleanDisplayName';
 
 /**
  * Fetches the mention text for a specified user (and optionally a post ID for replies).
@@ -20,17 +20,18 @@ import cleanDisplayName, { ShouldUseOldFormat } from './cleanDisplayName';
  * getMentionText(User) // User's username is 'username'
  */
 export default function getMentionText(user: User, postId?: number): string {
-  const cleanText = cleanDisplayName(user);
-
   if (postId === undefined) {
     if (ShouldUseOldFormat()) {
       // Plain @username
+      const cleanText = cleanDisplayName(user, false);
       return `@${cleanText}`;
     }
     // @"Display name"#UserID
+    const cleanText = cleanDisplayName(user);
     return `@"${cleanText}"${user.id()}`;
   } else {
     // @"Display name"#pPostID
+    const cleanText = cleanDisplayName(user);
     return `@"${cleanText}"#p${postId}`;
   }
 }
