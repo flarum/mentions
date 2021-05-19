@@ -221,8 +221,6 @@ export default function addComposerAutocomplete() {
         dropdown.setIndex(0);
         dropdown.$().scrollTop(0);
 
-        // clearTimeout(searchTimeout);
-
         // Don't send API calls searching for users until at least 2 characters have been typed.
         // This focuses the mention results on users and posts in the discussion.
         if (typed.length > 1) {
