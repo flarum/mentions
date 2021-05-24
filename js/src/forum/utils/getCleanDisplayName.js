@@ -15,7 +15,7 @@ const GetDeletedUserText = () => app.translator.trans('core.lib.username.deleted
  * @param user An instance of the User model to fetch the username for
  * @param useDisplayName If `true`, uses `user.displayName()`, otherwise, uses `user.username()`
  */
-export default function cleanDisplayName(user, useDisplayName = true) {
+export default function getCleanDisplayName(user, useDisplayName = true) {
   if (!user) return GetDeletedUserText().replace(/"#[a-z]{0,3}[0-9]+/, '_');
 
   const text = (useDisplayName ? user.displayName() : user.username()) || GetDeletedUserText();
