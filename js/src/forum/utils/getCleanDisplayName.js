@@ -3,9 +3,9 @@
  *
  * `'@username'` or `'@"Display name"'`
  */
-export const ShouldUseOldFormat = () => app.forum.data.attributes.allowUsernameMentionFormat || false;
+export const shouldUseOldFormat = () => app.forum.data.attributes.allowUsernameMentionFormat || false;
 
-const GetDeletedUserText = () => app.translator.trans('core.lib.username.deleted_text');
+const getDeletedUserText = () => app.translator.trans('core.lib.username.deleted_text');
 
 /**
  * Fetches a user's username or display name.
@@ -16,9 +16,9 @@ const GetDeletedUserText = () => app.translator.trans('core.lib.username.deleted
  * @param useDisplayName If `true`, uses `user.displayName()`, otherwise, uses `user.username()`
  */
 export default function getCleanDisplayName(user, useDisplayName = true) {
-  if (!user) return GetDeletedUserText().replace(/"#[a-z]{0,3}[0-9]+/, '_');
+  if (!user) return getDeletedUserText().replace(/"#[a-z]{0,3}[0-9]+/, '_');
 
-  const text = (useDisplayName ? user.displayName() : user.username()) || GetDeletedUserText();
+  const text = (useDisplayName ? user.displayName() : user.username()) || getDeletedUserText();
 
   return text.replace(/"#[a-z]{0,3}[0-9]+/, '_');
 }
