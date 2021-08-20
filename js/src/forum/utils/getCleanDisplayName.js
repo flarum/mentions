@@ -3,7 +3,7 @@
  *
  * `'@username'` or `'@"Display name"'`
  */
-export const shouldUseOldFormat = () => app.forum.data.attributes.allowUsernameMentionFormat || false;
+export const shouldUseOldFormat = () => app.forum.attribute('allowUsernameMentionFormat') || false;
 
 const getDeletedUserText = () => app.translator.trans('core.lib.username.deleted_text');
 
