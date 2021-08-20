@@ -17,7 +17,7 @@ const throttledSearch = throttle(
   250, // 250ms timeout
   function (typed, searched, returnedUsers, returnedUserIds, dropdown, buildSuggestions) {
     const typedLower = typed.toLowerCase();
-    if (searched.indexOf(typedLower) === -1) {
+    if (!searched.includes(typedLower)) {
       app.store.find('users', { filter: { q: typed }, page: { limit: 5 } }).then((results) => {
         results.forEach((u) => {
           if (!returnedUserIds.has(u.id())) {
