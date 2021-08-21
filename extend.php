@@ -11,6 +11,7 @@ namespace Flarum\Mentions;
 
 use Flarum\Api\Controller;
 use Flarum\Api\Serializer\BasicPostSerializer;
+use Flarum\Api\Serializer\BasicUserSerializer;
 use Flarum\Api\Serializer\PostSerializer;
 use Flarum\Extend;
 use Flarum\Mentions\Notification\PostMentionedBlueprint;
@@ -56,7 +57,7 @@ return [
     (new Extend\ApiSerializer(BasicPostSerializer::class))
         ->hasMany('mentionedBy', BasicPostSerializer::class)
         ->hasMany('mentionsPosts', BasicPostSerializer::class)
-        ->hasMany('mentionsUsers', BasicPostSerializer::class),
+        ->hasMany('mentionsUsers', BasicUserSerializer::class),
 
     (new Extend\ApiController(Controller\ShowDiscussionController::class))
         ->addInclude(['posts.mentionedBy', 'posts.mentionedBy.user', 'posts.mentionedBy.discussion']),
