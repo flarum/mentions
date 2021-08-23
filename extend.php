@@ -73,11 +73,7 @@ return [
         ]),
 
     (new Extend\ApiController(Controller\ShowPostController::class))
-        ->addInclude(['mentionedBy', 'mentionedBy.user', 'mentionedBy.discussion'])
-        ->load([
-            'mentionsUsers', 'mentionsPosts', 'mentionsPosts.user', 'mentionedBy',
-            'mentionedBy.mentionsPosts', 'mentionedBy.mentionsPosts.user', 'mentionedBy.mentionsUsers',
-        ]),
+        ->addInclude(['mentionedBy', 'mentionedBy.user', 'mentionedBy.discussion']),
 
     (new Extend\ApiController(Controller\ListPostsController::class))
         ->addInclude(['mentionedBy', 'mentionedBy.user', 'mentionedBy.discussion'])
@@ -87,18 +83,10 @@ return [
         ]),
 
     (new Extend\ApiController(Controller\CreatePostController::class))
-        ->addInclude(['mentionsPosts', 'mentionsPosts.mentionedBy'])
-        ->load([
-            'mentionsUsers', 'mentionsPosts', 'mentionsPosts.user', 'mentionedBy',
-            'mentionedBy.mentionsPosts', 'mentionedBy.mentionsPosts.user', 'mentionedBy.mentionsUsers',
-        ]),
+        ->addInclude(['mentionsPosts', 'mentionsPosts.mentionedBy']),
 
     (new Extend\ApiController(Controller\UpdatePostController::class))
-        ->addInclude(['mentionsPosts', 'mentionsPosts.mentionedBy'])
-        ->load([
-            'mentionsUsers', 'mentionsPosts', 'mentionsPosts.user', 'mentionedBy',
-            'mentionedBy.mentionsPosts', 'mentionedBy.mentionsPosts.user', 'mentionedBy.mentionsUsers',
-        ]),
+        ->addInclude(['mentionsPosts', 'mentionsPosts.mentionedBy']),
 
     (new Extend\ApiController(Controller\AbstractSerializeController::class))
         ->prepareDataForSerialization(FilterVisiblePosts::class),
