@@ -5,7 +5,7 @@
  */
 export const shouldUseOldFormat = () => app.forum.attribute('allowUsernameMentionFormat') || false;
 
-const getDeletedUserText = () => app.translator.trans('core.lib.username.deleted_text');
+const getDeletedUserText = () => app.translator.trans('core.lib.username.deleted_text').pop();
 
 /**
  * Fetches a user's username or display name.
