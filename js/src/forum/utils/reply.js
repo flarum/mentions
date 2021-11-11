@@ -2,7 +2,7 @@ import DiscussionControls from 'flarum/forum/utils/DiscussionControls';
 import EditPostComposer from 'flarum/forum/components/EditPostComposer';
 import getMentionText from './getMentionText';
 
-function insertMention(post, composer, quote) {
+export function insertMention(post, composer, quote) {
   const user = post.user();
   const mention = getMentionText(user, post.id()) + ' ';
 

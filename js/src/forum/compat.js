@@ -10,7 +10,7 @@ import AutocompleteDropdown from './fragments/AutocompleteDropdown';
 import PostQuoteButton from './fragments/PostQuoteButton';
 import getCleanDisplayName from './utils/getCleanDisplayName';
 import getMentionText from './utils/getMentionText';
-import reply from './utils/reply';
+import * as reply from './utils/reply';
 import selectedText from './utils/selectedText';
 import * as textFormatter from './utils/textFormatter';
 
