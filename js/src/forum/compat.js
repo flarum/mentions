@@ -14,7 +14,7 @@ import reply from './utils/reply';
 import selectedText from './utils/selectedText';
 import * as textFormatter from './utils/textFormatter';
 
-export default Object.assign(compat, {
+export default {
   'mentions/addComposerAutocomplete': addComposerAutocomplete,
   'mentions/addMentionedByList': addMentionedByList,
   'mentions/addPostMentionPreviews': addPostMentionPreviews,
@@ -30,4 +30,4 @@ export default Object.assign(compat, {
   'mentions/utils/reply': reply,
   'mentions/utils/selectedText': selectedText,
   'mentions/utils/textFormatter': textFormatter
-});
+};
