@@ -1,8 +1,3 @@
-import addComposerAutocomplete from './addComposerAutocomplete';
-import addMentionedByList from './addMentionedByList';
-import addPostMentionPreviews from './addPostMentionPreviews';
-import addPostQuoteButton from './addPostQuoteButton';
-import addPostReplyAction from './addPostReplyAction';
 import MentionsUserPage from './components/MentionsUserPage';
 import PostMentionedNotification from './components/PostMentionedNotification';
 import UserMentionedNotification from './components/UserMentionedNotification';
@@ -15,11 +10,6 @@ import selectedText from './utils/selectedText';
 import * as textFormatter from './utils/textFormatter';
 
 export default {
-  'mentions/addComposerAutocomplete': addComposerAutocomplete,
-  'mentions/addMentionedByList': addMentionedByList,
-  'mentions/addPostMentionPreviews': addPostMentionPreviews,
-  'mentions/addPostQuoteButton': addPostQuoteButton,
-  'mentions/addPostReplyAction': addPostReplyAction,
   'mentions/components/MentionsUserPage': MentionsUserPage,
   'mentions/components/PostMentionedNotification': PostMentionedNotification,
   'mentions/components/UserMentionedNotification': UserMentionedNotification,
