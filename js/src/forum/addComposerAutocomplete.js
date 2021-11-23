@@ -71,7 +71,7 @@ export default function addComposerAutocomplete() {
       dropdown.hide();
     };
 
-    params.inputListeners.push(function () {
+    params.inputListeners.push(() => {
       const selection = this.attrs.composer.editor.getSelectionRange();
 
       const cursor = selection[0];
