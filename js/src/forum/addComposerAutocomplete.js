@@ -72,7 +72,7 @@ export default function addComposerAutocomplete() {
     };
 
     params.inputListeners.push(function () {
-      const selection = app.composer.editor.getSelectionRange();
+      const selection = this.attrs.composer.editor.getSelectionRange();
 
       const cursor = selection[0];
 
@@ -80,7 +80,7 @@ export default function addComposerAutocomplete() {
 
       // Search backwards from the cursor for an '@' symbol. If we find one,
       // we will want to show the autocomplete dropdown!
-      const lastChunk = app.composer.editor.getLastNChars(30);
+      const lastChunk = this.attrs.composer.editor.getLastNChars(30);
       absMentionStart = 0;
       for (let i = lastChunk.length - 1; i >= 0; i--) {
         const character = lastChunk.substr(i, 1);
