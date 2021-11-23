@@ -146,8 +146,8 @@ export default function addComposerAutocomplete() {
           // post, then we can suggest other posts in the discussion to mention.
           // We will add the 5 most recent comments in the discussion which
           // match any username characters that have been typed.
-          if (app.composer.bodyMatches(ReplyComposer) || app.composer.bodyMatches(EditPostComposer)) {
-            const composerAttrs = app.composer.body.attrs;
+          if (this.attrs.composer.bodyMatches(ReplyComposer) || this.attrs.composer.bodyMatches(EditPostComposer)) {
+            const composerAttrs = this.attrs.composer.body.attrs;
             const composerPost = composerAttrs.post;
             const discussion = (composerPost && composerPost.discussion()) || composerAttrs.discussion;
 
@@ -189,7 +189,7 @@ export default function addComposerAutocomplete() {
             m.render($container[0], dropdown.render());
 
             dropdown.show();
-            const coordinates = app.composer.editor.getCaretCoordinates(absMentionStart);
+            const coordinates = this.attrs.composer.editor.getCaretCoordinates(absMentionStart);
             const width = dropdown.$().outerWidth();
             const height = dropdown.$().outerHeight();
             const parent = dropdown.$().offsetParent();
