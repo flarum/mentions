@@ -9,6 +9,7 @@
 
 namespace Flarum\Mentions\Formatter;
 
+use Flarum\Post\Post;
 use Flarum\User\User;
 use s9e\TextFormatter\Utils;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -52,7 +53,9 @@ class UnparseUserMentions
         $post = $context;
 
         return Utils::replaceAttributes($xml, 'USERMENTION', function ($attributes) use ($post) {
-            $user = $post->mentionsUsers->find($attributes['id']);
+            $user = ($post instanceof Post && $post->exists)
+                ? $post->mentionsUsers->find($attributes['id'])
+                : User::find($attributes['id']);
 
             if ($user) {
                 $attributes['displayname'] = $user->display_name;
