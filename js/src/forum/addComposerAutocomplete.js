@@ -97,7 +97,24 @@ export default function addComposerAutocomplete() {
 
       if (absMentionStart) {
         typed = lastChunk.substring(relMentionStart).toLowerCase();
-        matchTyped = typed.match(/^["|“]((?:(?!"#).)+)$/);
+        /**
+         * Match descriptions:
+         * [0] - full string
+         * [1] - first quote
+         * [2] - username/display name search query
+         * [3] - (optional) end quote and hash
+         *
+         * We can check is capture group 3 exists to see if the string matches
+         * a full mention or not, which can prevent us searching unnecessarily.
+         *
+         * @example
+         * `"davwheat 123"#p1234`
+         *  ^------------------^    [0]
+         *  ^                       [1]
+         *   ^----------^           [2]
+         *                ^----^    [3]
+         */
+        matchTyped = typed.match(/^(["“])(.+?)((?:\1#)p?\d*)?$/);
         typed = (matchTyped && matchTyped[1]) || typed;
 
         const makeSuggestion = function (user, replacement, content, className = '') {
@@ -225,7 +242,7 @@ export default function addComposerAutocomplete() {
 
         // Don't send API calls searching for users until at least 2 characters have been typed.
         // This focuses the mention results on users and posts in the discussion.
-        if (typed.length > 1 && app.forum.attribute('canSearchUsers')) {
+        if (matchTyped[3] === undefined && typed.length > 1 && app.forum.attribute('canSearchUsers')) {
           throttledSearch(typed, searched, returnedUsers, returnedUserIds, dropdown, buildSuggestions);
         }
       }
