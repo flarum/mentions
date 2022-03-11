@@ -40,11 +40,11 @@ class ListTest extends TestCase
             'post_mentions_user' => [
                 ['post_id' => 2, 'mentions_user_id' => 1],
                 ['post_id' => 3, 'mentions_user_id' => 1],
-                ['post_id' => 4, 'mentions_user_id' => 2]
+                ['post_id' => 4, 'mentions_user_id' => 2],
             ],
             'users' => [
                 $this->normalUser(),
-            ]
+            ],
         ]);
     }
 

@@ -30,7 +30,8 @@ class UnparseUserMentions
      * Configure rendering for user mentions.
      *
      * @param string $xml
-     * @param mixed $context
+     * @param mixed  $context
+     *
      * @return string $xml to be unparsed
      */
     public function __invoke($context, string $xml)
@@ -44,8 +45,9 @@ class UnparseUserMentions
     /**
      * Updates XML user mention tags before unparsing so that unparsing uses new display names.
      *
-     * @param mixed $context
-     * @param string $xml : Parsed text.
+     * @param mixed  $context
+     * @param string $xml     : Parsed text.
+     *
      * @return string $xml : Updated XML tags;
      */
     protected function updateUserMentionTags($context, string $xml): string
@@ -73,6 +75,7 @@ class UnparseUserMentions
      * Transforms user mention tags from XML to raw unparsed content with updated format and display name.
      *
      * @param string $xml : Parsed text.
+     *
      * @return string : Unparsed text.
      */
     protected function unparseUserMentionTags(string $xml): string

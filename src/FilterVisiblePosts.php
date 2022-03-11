@@ -40,7 +40,7 @@ class FilterVisiblePosts
      * have access to.
      *
      * @param Controller\AbstractSerializeController $controller
-     * @param mixed $data
+     * @param mixed                                  $data
      */
     public function __invoke(Controller\AbstractSerializeController $controller, $data, ServerRequestInterface $request)
     {
@@ -55,7 +55,7 @@ class FilterVisiblePosts
             || $controller instanceof Controller\UpdatePostController) {
             $relations = [
                 'mentionsUsers', 'mentionsPosts', 'mentionsPosts.user', 'mentionedBy',
-                'mentionedBy.mentionsPosts', 'mentionedBy.mentionsPosts.user', 'mentionedBy.mentionsUsers'
+                'mentionedBy.mentionsPosts', 'mentionedBy.mentionsPosts.user', 'mentionedBy.mentionsUsers',
             ];
 
             $posts = [$data];

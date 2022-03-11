@@ -28,7 +28,8 @@ class UnparsePostMentions
      * Configure rendering for user mentions.
      *
      * @param string $xml
-     * @param mixed $context
+     * @param mixed  $context
+     *
      * @return string $xml to be unparsed
      */
     public function __invoke($context, string $xml)
@@ -42,8 +43,9 @@ class UnparsePostMentions
     /**
      * Updates XML post mention tags before unparsing so that unparsing uses new display names.
      *
-     * @param mixed $context
-     * @param string $xml : Parsed text.
+     * @param mixed  $context
+     * @param string $xml     : Parsed text.
+     *
      * @return string $xml : Updated XML tags;
      */
     protected function updatePostMentionTags($context, string $xml): string
@@ -56,11 +58,11 @@ class UnparsePostMentions
                 $attributes['displayname'] = $post->user->display_name;
             }
 
-            if (! $post) {
+            if (!$post) {
                 $attributes['displayname'] = $this->translator->trans('flarum-mentions.forum.post_mention.deleted_text');
             }
 
-            if ($post && ! $post->user) {
+            if ($post && !$post->user) {
                 $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }
 
@@ -76,6 +78,7 @@ class UnparsePostMentions
      * Transforms post mention tags from XML to raw unparsed content with updated format and display name.
      *
      * @param string $xml : Parsed text.
+     *
      * @return string : Unparsed text.
      */
     protected function unparsePostMentionTags(string $xml): string

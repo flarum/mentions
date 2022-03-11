@@ -119,6 +119,7 @@ class ConfigureMentions
 
     /**
      * @param $tag
+     *
      * @return bool
      */
     public static function addPostId($tag)

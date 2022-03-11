@@ -29,10 +29,11 @@ class FormatPostMentions
     /**
      * Configure rendering for post mentions.
      *
-     * @param s9e\TextFormatter\Renderer $renderer
-     * @param mixed $context
-     * @param string|null $xml
+     * @param s9e\TextFormatter\Renderer              $renderer
+     * @param mixed                                   $context
+     * @param string|null                             $xml
      * @param Psr\Http\Message\ServerRequestInterface $request
+     *
      * @return void
      */
     public function __invoke(Renderer $renderer, $context, $xml, Request $request = null)
@@ -47,12 +48,12 @@ class FormatPostMentions
 
             $attributes['deleted'] = false;
 
-            if (! $post) {
+            if (!$post) {
                 $attributes['displayname'] = $this->translator->trans('flarum-mentions.forum.post_mention.deleted_text');
                 $attributes['deleted'] = true;
             }
 
-            if ($post && ! $post->user) {
+            if ($post && !$post->user) {
                 $attributes['displayname'] = $this->translator->trans('core.lib.username.deleted_text');
             }
 

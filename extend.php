@@ -33,7 +33,7 @@ return [
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js'),
 
-    (new Extend\Formatter)
+    (new Extend\Formatter())
         ->configure(ConfigureMentions::class)
         ->render(Formatter\FormatPostMentions::class)
         ->render(Formatter\FormatUserMentions::class)
@@ -47,7 +47,7 @@ return [
 
     new Extend\Locales(__DIR__.'/locale'),
 
-    (new Extend\View)
+    (new Extend\View())
         ->namespace('flarum-mentions', __DIR__.'/views'),
 
     (new Extend\Notification())
@@ -69,7 +69,7 @@ return [
     (new Extend\ApiController(Controller\ListDiscussionsController::class))
         ->load([
             'firstPost.mentionsUsers', 'firstPost.mentionsPosts', 'firstPost.mentionsPosts.user',
-            'lastPost.mentionsUsers', 'lastPost.mentionsPosts', 'lastPost.mentionsPosts.user'
+            'lastPost.mentionsUsers', 'lastPost.mentionsPosts', 'lastPost.mentionsPosts.user',
         ]),
 
     (new Extend\ApiController(Controller\ShowPostController::class))
@@ -91,7 +91,7 @@ return [
     (new Extend\ApiController(Controller\AbstractSerializeController::class))
         ->prepareDataForSerialization(FilterVisiblePosts::class),
 
-    (new Extend\Settings)
+    (new Extend\Settings())
         ->serializeToForum('allowUsernameMentionFormat', 'flarum-mentions.allow_username_format', 'boolval'),
 
     (new Extend\Event())

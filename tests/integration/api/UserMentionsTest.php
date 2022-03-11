@@ -47,14 +47,14 @@ class UserMentionsTest extends TestCase
             ],
             'post_mentions_user' => [
                 ['post_id' => 4, 'mentions_user_id' => 4],
-                ['post_id' => 10, 'mentions_user_id' => 5]
+                ['post_id' => 10, 'mentions_user_id' => 5],
             ],
         ]);
 
         $this->setting('display_name_driver', 'custom_display_name_driver');
 
         $this->extend(
-            (new Extend\User)
+            (new Extend\User())
                 ->displayNameDriver('custom_display_name_driver', CustomDisplayNameDriver::class)
         );
     }
@@ -69,7 +69,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@potato',
@@ -102,7 +102,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@potato',
@@ -133,7 +133,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@"POTATO$"#3',
@@ -164,7 +164,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@“POTATO$”#3',
@@ -195,7 +195,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@"franzofflarum"#82',
@@ -226,7 +226,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@"TOBY$"#4 @"POTATO$"#p4 @"franzofflarum"#82 @"POTATO$"#3',
@@ -279,7 +279,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@"potato_"#3',
@@ -309,7 +309,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@"potato_"#3',
@@ -364,7 +364,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@"Bad "#p6 User"#5',
@@ -416,7 +416,7 @@ class UserMentionsTest extends TestCase
         $response = $this->send(
             $this->request('POST', '/api/posts', [
                 'authenticatedAs' => 1,
-                'json' => [
+                'json'            => [
                     'data' => [
                         'attributes' => [
                             'content' => '@"Bad _ User"#5',
